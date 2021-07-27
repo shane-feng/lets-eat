@@ -10,6 +10,9 @@ const foodSchema = new Schema(
       required: true,
       trim: true,
     },
+    dateToEat: {
+      type: Date,
+    },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
