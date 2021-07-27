@@ -14,7 +14,7 @@ const foodSchema = new Schema(
       type: Date,
     },
     owner: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       required: true,
     },
   },
