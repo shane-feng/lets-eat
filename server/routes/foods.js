@@ -13,4 +13,13 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.get('/', async (req, res) => {
+  try {
+    const results = await Food.find({});
+    res.send(results);
+  } catch (e) {
+    res.status(500).send();
+  }
+});
+
 module.exports = router;
