@@ -15,13 +15,26 @@ router.post('/', async (req, res) => {
 
 // fetch food items
 router.get('/', async (req, res) => {
+  const { date } = req.query;
   // fetch food items that should be eaten today
-  if (req.query.date) {
+  if (date) {
     const today = new Date();
+    const queryDate = new Date(date);
+
+    // prevents requests that have date query strings that dont match todays date as we only want food that will be eaten today
+    if (
+      queryDate.getFullYear() != today.getFullYear() ||
+      queryDate.getMonth() != today.getMonth() ||
+      queryDate.getDate() + 1 != today.getDate()
+    ) {
+      res.status(422).send();
+      return;
+    }
 
     try {
       const results = await Food.find();
       filteredResults = results.filter(({ dateToEat }) => {
+        console.log(dateToEat);
         return (
           dateToEat?.getFullYear() == today.getFullYear() &&
           dateToEat?.getMonth() == today.getMonth() &&
