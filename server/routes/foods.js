@@ -58,7 +58,16 @@ router.get('/', async (req, res) => {
   }
 });
 
+// update food item details
 router.patch('/:id', async (req, res) => {
+  const updateFields = Object.keys(req.body);
+  const allowedUpdateFields = ['picture', 'name', 'dateToEat'];
+  const isValidUpdate = updateFields.every((update) => allowedUpdateFields.includes(update));
+
+  if (!isValidUpdate) {
+    return res.status(400).send({ errror: 'Invalid update fields.' });
+  }
+
   try {
     const food = await Food.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
 
