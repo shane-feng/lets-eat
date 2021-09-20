@@ -16,6 +16,7 @@ router.post('/', async (req, res) => {
 // fetch food items
 router.get('/', async (req, res) => {
   const { date } = req.query;
+
   // fetch food items that should be eaten today
   if (date) {
     const today = new Date();
@@ -54,6 +55,20 @@ router.get('/', async (req, res) => {
     } catch (e) {
       res.status(500).send();
     }
+  }
+});
+
+router.patch('/:id', async (req, res) => {
+  try {
+    const food = await Food.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+
+    if (!food) {
+      return res.status(404).send();
+    }
+
+    res.send(food);
+  } catch (e) {
+    res.status(400).send(e);
   }
 });
 
