@@ -81,4 +81,17 @@ router.patch('/:id', async (req, res) => {
   }
 });
 
+// delete food item
+router.delete('/:id', async (req, res) => {
+  try {
+    const food = await Food.findByIdAndDelete(req.params.id);
+    if (!food) {
+      return res.status(404).send();
+    }
+    res.send(food);
+  } catch (e) {
+    res.status(500).send();
+  }
+});
+
 module.exports = router;
