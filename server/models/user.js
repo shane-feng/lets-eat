@@ -1,6 +1,9 @@
 const { Schema, model } = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const { secret, tokenExpiresInHours } = require('../config');
+
 const userSchema = new Schema(
   {
     name: {
@@ -37,6 +40,13 @@ const userSchema = new Schema(
   },
   { timestamps: true }
 );
+
+// add user instance method to generate jwt
+userSchema.methods.generateAuthToken = async function () {
+  const user = this;
+  const token = jwt.sign({ _id: user._id.toString() }, secret, { expiresIn: tokenExpiresInHours });
+  return token;
+};
 
 // create static method on User model to find user by credentials
 userSchema.statics.findByCredentials = async (email, password) => {
