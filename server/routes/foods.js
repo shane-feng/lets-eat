@@ -35,7 +35,7 @@ router.get('/', auth, async (req, res) => {
     }
 
     try {
-      const results = await Food.find();
+      const results = await Food.find({ owner: req.user._id });
       filteredResults = results.filter(({ dateToEat }) => {
         return (
           dateToEat?.getFullYear() == today.getFullYear() &&
@@ -51,7 +51,7 @@ router.get('/', auth, async (req, res) => {
   } else {
     // fetch all food items
     try {
-      const results = await Food.find();
+      const results = await Food.find({ owner: req.user._id });
       res.send(results);
     } catch (e) {
       res.status(500).send();
