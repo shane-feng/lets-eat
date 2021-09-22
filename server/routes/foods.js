@@ -70,12 +70,14 @@ router.patch('/:id', auth, async (req, res) => {
   }
 
   try {
-    const food = await Food.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    const food = await Food.findOne({ _id: req.params.id, owner: req.user._id });
 
     if (!food) {
       return res.status(404).send();
     }
 
+    updateFields.forEach((update) => (food[update] = req.body[update]));
+    await food.save();
     res.send(food);
   } catch (e) {
     res.status(400).send(e);
