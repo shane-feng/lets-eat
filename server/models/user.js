@@ -41,6 +41,18 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
+// add user instance method to filter user object for when user object is stringified
+userSchema.methods.toJSON = function () {
+  const user = this;
+  const userObject = user.toObject();
+
+  delete userObject.password;
+  delete userObject.tokens;
+  delete userObject.createdAt;
+  delete userObject.updatedAt;
+  return userObject;
+};
+
 // add user instance method to generate jwt
 userSchema.methods.generateAuthToken = async function () {
   const user = this;
