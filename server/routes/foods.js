@@ -87,10 +87,12 @@ router.patch('/:id', auth, async (req, res) => {
 // delete food item
 router.delete('/:id', auth, async (req, res) => {
   try {
-    const food = await Food.findByIdAndDelete(req.params.id);
+    const food = await Food.findOneAndDelete({ _id: req.params.id, owner: req.user._id });
+
     if (!food) {
       return res.status(404).send();
     }
+
     res.send(food);
   } catch (e) {
     res.status(500).send();
