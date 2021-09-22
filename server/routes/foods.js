@@ -1,10 +1,12 @@
 const express = require('express');
-
+const auth = require('../middleware/auth');
 const Food = require('../models/food');
+
 const router = express.Router();
 
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
   const food = new Food(req.body);
+
   try {
     await food.save();
     res.status(201).send(food);
@@ -14,7 +16,7 @@ router.post('/', async (req, res) => {
 });
 
 // fetch food items
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
   const { date } = req.query;
 
   // fetch food items that should be eaten today
@@ -35,7 +37,6 @@ router.get('/', async (req, res) => {
     try {
       const results = await Food.find();
       filteredResults = results.filter(({ dateToEat }) => {
-        console.log(dateToEat);
         return (
           dateToEat?.getFullYear() == today.getFullYear() &&
           dateToEat?.getMonth() == today.getMonth() &&
@@ -59,7 +60,7 @@ router.get('/', async (req, res) => {
 });
 
 // update food item details
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', auth, async (req, res) => {
   const updateFields = Object.keys(req.body);
   const allowedUpdateFields = ['picture', 'name', 'dateToEat'];
   const isValidUpdate = updateFields.every((update) => allowedUpdateFields.includes(update));
@@ -82,7 +83,7 @@ router.patch('/:id', async (req, res) => {
 });
 
 // delete food item
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
   try {
     const food = await Food.findByIdAndDelete(req.params.id);
     if (!food) {
