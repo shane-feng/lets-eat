@@ -1,15 +1,8 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import Link from '@mui/material/Link';
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
+import { AppBar, Toolbar, Typography, Button, Link, IconButton, Menu, MenuItem } from '@mui/material/';
 import MenuIcon from '@mui/icons-material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 
 const navbarItemStyles = {
   margin: '9px',
