@@ -6,7 +6,12 @@ const { secret, tokenExpiresInHours } = require('../config');
 
 const userSchema = new Schema(
   {
-    name: {
+    firstName: {
+      type: String,
+      require: true,
+      trim: true,
+    },
+    lastName: {
       type: String,
       require: true,
       trim: true,
