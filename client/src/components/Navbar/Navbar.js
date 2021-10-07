@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { logoutUser } from '../../api/apiService';
+import { clearSessionData } from '../../utils';
 
 import { AppBar, Toolbar, Typography, Button, Link, IconButton, Menu, MenuItem } from '@mui/material/';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -32,7 +34,17 @@ function Navbar() {
   const history = useHistory();
 
   const handleMobileMenuOpen = (event) => setMobileMoreAnchorEl(event.currentTarget);
+
   const handleMobileMenuClose = () => setMobileMoreAnchorEl(null);
+
+  const handleLogoutUser = async () => {
+    try {
+      await logoutUser();
+      clearSessionData();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const renderMobileMenu = (
     <Menu
@@ -81,7 +93,7 @@ function Navbar() {
       <MenuItem sx={menuItemStyle} onClick={() => history.push('/login')}>
         Login
       </MenuItem>
-      <MenuItem sx={menuItemStyle} onClick={() => history.push('/logout')}>
+      <MenuItem sx={menuItemStyle} onClick={handleLogoutUser}>
         Logout
       </MenuItem>
     </Menu>
@@ -107,7 +119,7 @@ function Navbar() {
         <Button sx={navbarItemStyles} color="primary" variant="outlined">
           Login
         </Button>
-        <Button sx={navbarItemStyles} color="error" variant="outlined">
+        <Button sx={navbarItemStyles} color="error" variant="outlined" onClick={handleLogoutUser}>
           Logout
         </Button>
         <IconButton
