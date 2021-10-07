@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import { signupUser } from '../../api/apiService';
+import { setSessionData } from '../../utils';
+
 import { Container, Grid, Button } from '@mui/material';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import { signupUser } from '../../api/apiService';
 
 const containerStyle = { justifyContent: 'center' };
 
@@ -14,11 +16,20 @@ const textFieldStyle = { display: 'block' };
 const buttonContainerStyle = { marginTop: '10px', padding: '0 50px', justifyContent: 'flex-end' };
 
 function Signup() {
-  const [info, setInfo] = useState({ email: '', firstName: '', lastName: '', password: '' });
+  const [email, setEmail] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [password, setPassword] = useState('');
 
-  const handleSignup = async (event) => {
-    event.preventDefault();
-    await signupUser(info);
+  const handleSignup = async (e) => {
+    e.preventDefault();
+
+    try {
+      const { data } = await signupUser({ email, firstName, lastName, password });
+      setSessionData({ id: data.user._id, email: data.user.email, token: data.token });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -33,8 +44,8 @@ function Signup() {
               size="normal"
               fullWidth
               sx={textFieldStyle}
-              value={info.email}
-              onChange={(event) => setInfo({ ...info, email: event.target.value })}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               validators={['required', 'isEmail']}
               errorMessages={['This field is required', 'Invalid email format']}
             />
@@ -47,8 +58,8 @@ function Signup() {
               size="normal"
               fullWidth
               sx={textFieldStyle}
-              value={info.firstName}
-              onChange={(event) => setInfo({ ...info, firstName: event.target.value })}
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
               validators={['required', 'matchRegexp:^[a-zA-Zs]+$']}
               errorMessages={['This field is required', 'Must contain only letters']}
             />
@@ -61,8 +72,8 @@ function Signup() {
               size="normal"
               fullWidth
               sx={textFieldStyle}
-              value={info.lastName}
-              onChange={(event) => setInfo({ ...info, lastName: event.target.value })}
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
               validators={['required', 'matchRegexp:^[a-zA-Zs]+$']}
               errorMessages={['This field is required', 'Must contain only letters']}
             />
@@ -75,8 +86,8 @@ function Signup() {
               size="normal"
               fullWidth
               sx={textFieldStyle}
-              value={info.password}
-              onChange={(event) => setInfo({ ...info, password: event.target.value })}
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
               validators={['required', 'minStringLength: 8', 'maxStringLength: 20']}
               errorMessages={[
                 'This field is required',
