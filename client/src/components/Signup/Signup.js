@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Container, Grid, Button } from '@mui/material';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+import { signupUser } from '../../api/apiService';
 
 const containerStyle = { justifyContent: 'center' };
 
@@ -10,10 +11,15 @@ const gridItemStyle = { height: '100px' };
 
 const textFieldStyle = { display: 'block' };
 
+const buttonContainerStyle = { marginTop: '10px', padding: '0 50px', justifyContent: 'flex-end' };
+
 function Signup() {
   const [info, setInfo] = useState({ email: '', firstName: '', lastName: '', password: '' });
 
-  const handleSignup = () => {};
+  const handleSignup = async (event) => {
+    event.preventDefault();
+    await signupUser(info);
+  };
 
   return (
     <Container maxWidth="sm" sx={containerStyle}>
@@ -28,7 +34,7 @@ function Signup() {
               fullWidth
               sx={textFieldStyle}
               value={info.email}
-              onChange={(event) => setInfo({ email: event.target.value })}
+              onChange={(event) => setInfo({ ...info, email: event.target.value })}
               validators={['required', 'isEmail']}
               errorMessages={['This field is required', 'Invalid email format']}
             />
@@ -42,7 +48,7 @@ function Signup() {
               fullWidth
               sx={textFieldStyle}
               value={info.firstName}
-              onChange={(event) => setInfo({ firstName: event.target.value })}
+              onChange={(event) => setInfo({ ...info, firstName: event.target.value })}
               validators={['required', 'matchRegexp:^[a-zA-Zs]+$']}
               errorMessages={['This field is required', 'Must contain only letters']}
             />
@@ -56,7 +62,7 @@ function Signup() {
               fullWidth
               sx={textFieldStyle}
               value={info.lastName}
-              onChange={(event) => setInfo({ lastName: event.target.value })}
+              onChange={(event) => setInfo({ ...info, lastName: event.target.value })}
               validators={['required', 'matchRegexp:^[a-zA-Zs]+$']}
               errorMessages={['This field is required', 'Must contain only letters']}
             />
@@ -70,7 +76,7 @@ function Signup() {
               fullWidth
               sx={textFieldStyle}
               value={info.password}
-              onChange={(event) => setInfo({ password: event.target.value })}
+              onChange={(event) => setInfo({ ...info, password: event.target.value })}
               validators={['required', 'minStringLength: 8', 'maxStringLength: 20']}
               errorMessages={[
                 'This field is required',
@@ -79,7 +85,7 @@ function Signup() {
               ]}
             />
           </Grid>
-          <Grid container xs={10} sx={{ marginTop: '10px', justifyContent: 'flex-end' }}>
+          <Grid container sx={buttonContainerStyle}>
             <Button variant="contained" type="submit">
               Sign up
             </Button>

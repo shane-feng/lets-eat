@@ -20,8 +20,8 @@ const menuStyle = {
 };
 
 const menuItemStyle = {
-  width: '120px',
-  justifyContent: 'center',
+  fontSize: '20px',
+  width: '130px',
 };
 
 function Navbar() {
