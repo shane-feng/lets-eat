@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { signupUser } from '../../api/apiService';
 import { setSessionData } from '../../utils';
 
@@ -21,12 +22,15 @@ function Signup() {
   const [lastName, setLastName] = useState('');
   const [password, setPassword] = useState('');
 
+  const history = useHistory();
+
   const handleSignup = async (e) => {
     e.preventDefault();
 
     try {
       const { data } = await signupUser({ email, firstName, lastName, password });
       setSessionData({ id: data.user._id, email: data.user.email, token: data.token });
+      history.push('/menu');
     } catch (error) {
       console.log(error);
     }
