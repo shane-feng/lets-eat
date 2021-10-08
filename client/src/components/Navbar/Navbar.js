@@ -8,6 +8,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 
 const appBarStyle = { marginBottom: '50px' };
 
+const typographyStyle = { flexGrow: 1 };
+
 const navbarItemStyles = {
   margin: '9px',
   display: {
@@ -104,7 +106,7 @@ function Navbar() {
   return (
     <AppBar position="static" color="default" elevation={0} sx={appBarStyle}>
       <Toolbar>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+        <Typography variant="h6" component="div" sx={typographyStyle}>
           Welcome
         </Typography>
         <nav>

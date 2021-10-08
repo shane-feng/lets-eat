@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { signupUser } from '../../api/apiService';
+import { loginUser } from '../../api/apiService';
 import { setSessionData } from '../../utils';
 
 import { Container, Grid, Button } from '@mui/material';
@@ -15,21 +15,18 @@ const gridItemStyle = { height: '100px' };
 
 const textFieldStyle = { display: 'block' };
 
-const buttonContainerStyle = { marginTop: '10px', padding: '0 50px', justifyContent: 'flex-end' };
+const buttonContainerStyle = { marginTop: '10px', padding: '0 50px', justifyContent: 'center' };
 
-function Signup() {
+function Login() {
   const [email, setEmail] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
   const [password, setPassword] = useState('');
 
   const history = useHistory();
 
-  const handleSignup = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-
     try {
-      const { data } = await signupUser({ email, firstName, lastName, password });
+      const { data } = await loginUser(email, password);
       setSessionData({ id: data.user._id, email: data.user.email, token: data.token });
       history.push('/menu');
     } catch (error) {
@@ -40,10 +37,10 @@ function Signup() {
   return (
     <Container maxWidth="sm" sx={containerStyle}>
       <Typography variant="h4" component="div">
-        Sign Up
+        Login
       </Typography>
-      <ValidatorForm onSubmit={handleSignup}>
-        <Grid container spacing={4} sx={gridContainerStyle}>
+      <ValidatorForm onSubmit={handleLogin}>
+        <Grid container spacing={2} sx={gridContainerStyle}>
           <Grid item xs={10} sx={gridItemStyle}>
             <TextValidator
               label="Email"
@@ -58,34 +55,6 @@ function Signup() {
               errorMessages={['This field is required', 'Invalid email format']}
             />
           </Grid>
-          <Grid item xs={5} sx={gridItemStyle}>
-            <TextValidator
-              label="First Name"
-              InputLabelProps={{ shrink: true }}
-              placeholder="First Name"
-              size="normal"
-              fullWidth
-              sx={textFieldStyle}
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              validators={['required', 'matchRegexp:^[a-zA-Zs]+$']}
-              errorMessages={['This field is required', 'Must contain only letters']}
-            />
-          </Grid>
-          <Grid item xs={5} sx={gridItemStyle}>
-            <TextValidator
-              label="Last Name"
-              InputLabelProps={{ shrink: true }}
-              placeholder="Last Name"
-              size="normal"
-              fullWidth
-              sx={textFieldStyle}
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              validators={['required', 'matchRegexp:^[a-zA-Zs]+$']}
-              errorMessages={['This field is required', 'Must contain only letters']}
-            />
-          </Grid>
           <Grid item xs={10} sx={gridItemStyle}>
             <TextValidator
               label="Password"
@@ -96,17 +65,13 @@ function Signup() {
               sx={textFieldStyle}
               value={password}
               onChange={(event) => setPassword(event.target.value)}
-              validators={['required', 'minStringLength: 8', 'maxStringLength: 20']}
-              errorMessages={[
-                'This field is required',
-                'Password length must have a minimum of 8 characters',
-                'Password length can only have a maximum of 20 characters',
-              ]}
+              validators={['required']}
+              errorMessages={['This field is required']}
             />
           </Grid>
           <Grid container sx={buttonContainerStyle}>
             <Button variant="contained" type="submit">
-              Sign up
+              Login
             </Button>
           </Grid>
         </Grid>
@@ -115,4 +80,4 @@ function Signup() {
   );
 }
 
-export default Signup;
+export default Login;
