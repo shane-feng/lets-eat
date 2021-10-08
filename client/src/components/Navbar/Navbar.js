@@ -6,6 +6,8 @@ import { clearSessionData } from '../../utils';
 import { AppBar, Toolbar, Typography, Button, Link, IconButton, Menu, MenuItem } from '@mui/material/';
 import MenuIcon from '@mui/icons-material/Menu';
 
+const appBarStyle = { marginBottom: '50px' };
+
 const navbarItemStyles = {
   margin: '9px',
   display: {
@@ -100,7 +102,7 @@ function Navbar() {
   );
 
   return (
-    <AppBar position="static" color="default" elevation={0}>
+    <AppBar position="static" color="default" elevation={0} sx={appBarStyle}>
       <Toolbar>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           Welcome
