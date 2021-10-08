@@ -116,7 +116,7 @@ function Navbar() {
             Sign up
           </Link>
         </nav>
-        <Button sx={navbarItemStyles} color="primary" variant="outlined">
+        <Button sx={navbarItemStyles} color="primary" variant="outlined" onClick={() => history.push('/login')}>
           Login
         </Button>
         <Button sx={navbarItemStyles} color="error" variant="outlined" onClick={handleLogoutUser}>
