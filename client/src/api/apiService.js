@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SERVER_URL } from '../config';
+import { SERVER_URL } from '../constants';
 import { getSessionData } from '../utils';
 
 const apiService = axios.create({ baseURL: SERVER_URL });
