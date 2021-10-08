@@ -28,7 +28,7 @@ router.get('/', auth, async (req, res) => {
     if (
       queryDate.getFullYear() != today.getFullYear() ||
       queryDate.getMonth() != today.getMonth() ||
-      queryDate.getDate() + 1 != today.getDate()
+      queryDate.getDate() != today.getDate()
     ) {
       res.status(422).send();
       return;

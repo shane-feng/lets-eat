@@ -22,3 +22,14 @@ export const logoutUser = async () => {
   const res = await apiService.post(queryPath, {}, { headers: { Authorization: `Bearer ${session.token}` } });
   return res;
 };
+
+// fetch foods to be eaten today
+export const getFoodsToEat = async () => {
+  const { session } = getSessionData();
+  const date = new Date();
+  const res = await apiService.get('/foods', {
+    params: { date },
+    headers: { Authorization: `Bearer ${session.token}` },
+  });
+  return res;
+};
