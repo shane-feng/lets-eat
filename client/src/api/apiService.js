@@ -10,6 +10,12 @@ export const signupUser = async (userInfo) => {
   return res;
 };
 
+export const loginUser = async (email, password) => {
+  const queryPath = '/users/login';
+  const res = await apiService.post(queryPath, { email, password });
+  return res;
+};
+
 export const logoutUser = async () => {
   const { session } = getSessionData();
   const queryPath = '/users/logout';
