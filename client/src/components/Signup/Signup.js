@@ -4,9 +4,10 @@ import { signupUser } from '../../api/apiService';
 import { setSessionData } from '../../utils';
 
 import { Container, Grid, Button } from '@mui/material';
+import { Typography } from '@mui/material';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 
-const containerStyle = { justifyContent: 'center' };
+const containerStyle = { justifyContent: 'center', textAlign: 'center' };
 
 const gridContainerStyle = { justifyContent: 'center', marginTop: '50px' };
 
@@ -38,6 +39,9 @@ function Signup() {
 
   return (
     <Container maxWidth="sm" sx={containerStyle}>
+      <Typography variant="h4" component="div">
+        Sign Up
+      </Typography>
       <ValidatorForm onSubmit={handleSignup}>
         <Grid container spacing={2} sx={gridContainerStyle}>
           <Grid item xs={10} sx={gridItemStyle}>
