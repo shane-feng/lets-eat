@@ -4,10 +4,6 @@ import FoodItem from '../FoodItem/FoodItem';
 import { getFoodsToEat } from '../../api/apiService';
 import { decodeDataUri } from '../../utils';
 
-import { Grid } from '@mui/material';
-
-const gridItemStyle = { justifyContent: 'center' };
-
 function Eat() {
   const [foods, setFoods] = useState();
 
@@ -24,11 +20,7 @@ function Eat() {
     return foods?.map((food) => {
       const imgUri = decodeDataUri(food.picture.data);
 
-      return (
-        <Grid item key={food._id} xs={10} md={6} sx={gridItemStyle}>
-          <FoodItem food={food} img={imgUri} />
-        </Grid>
-      );
+      return <FoodItem food={food} img={imgUri} />;
     });
   }, [foods]);
 

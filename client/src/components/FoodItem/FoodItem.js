@@ -1,4 +1,8 @@
-import { Card, CardContent, CardMedia, CardActions, Container, Typography, Button } from '@mui/material';
+import { Grid, Card, CardContent, CardMedia, CardActions, Container, Typography, Button } from '@mui/material';
+
+const gridItemStyle = {
+  justifyContent: 'center',
+};
 
 const cardStyle = {
   display: {
@@ -39,23 +43,25 @@ const cardActionsStyle = {
 
 function FoodItem({ food, img, buttonProps }) {
   return (
-    <Card sx={cardStyle}>
-      <CardMedia component="img" image={img} alt="Food Image" sx={cardMediaStyle} />
-      <Container disableGutters sx={containerStyle}>
-        <CardContent sx={cardContentStyle}>
-          <Typography variant="h6">{food.name}</Typography>
-        </CardContent>
-        <CardActions disableSpacing sx={cardActionsStyle}>
-          {buttonProps?.map((buttonProp, index) => {
-            return (
-              <Button key={index} onClick={buttonProp.onClick}>
-                {buttonProp.text}
-              </Button>
-            );
-          })}
-        </CardActions>
-      </Container>
-    </Card>
+    <Grid item key={food._id} xs={10} md={6} sx={gridItemStyle}>
+      <Card sx={cardStyle}>
+        <CardMedia component="img" image={img} alt="Food Image" sx={cardMediaStyle} />
+        <Container disableGutters sx={containerStyle}>
+          <CardContent sx={cardContentStyle}>
+            <Typography variant="h6">{food.name}</Typography>
+          </CardContent>
+          <CardActions disableSpacing sx={cardActionsStyle}>
+            {buttonProps?.map((buttonProp, index) => {
+              return (
+                <Button key={index} onClick={buttonProp.onClick}>
+                  {buttonProp.text}
+                </Button>
+              );
+            })}
+          </CardActions>
+        </Container>
+      </Card>
+    </Grid>
   );
 }
 
