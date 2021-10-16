@@ -1,4 +1,16 @@
-import { Grid, Card, CardContent, CardMedia, CardActions, Container, Typography, Button } from '@mui/material';
+import {
+  Grid,
+  Card,
+  CardContent,
+  CardMedia,
+  CardActions,
+  Container,
+  Typography,
+  Button,
+  Switch,
+  FormGroup,
+  FormControlLabel,
+} from '@mui/material';
 
 const gridItemStyle = {
   justifyContent: 'center',
@@ -41,7 +53,7 @@ const cardActionsStyle = {
   justifyContent: 'center',
 };
 
-function FoodItem({ food, img, buttonProps }) {
+function FoodItem({ food, img, buttonsProps, switchProps }) {
   return (
     <Grid item key={food._id} xs={10} md={6} sx={gridItemStyle}>
       <Card sx={cardStyle}>
@@ -51,13 +63,18 @@ function FoodItem({ food, img, buttonProps }) {
             <Typography variant="h6">{food.name}</Typography>
           </CardContent>
           <CardActions disableSpacing sx={cardActionsStyle}>
-            {buttonProps?.map((buttonProp, index) => {
+            {buttonsProps?.map((buttonProps, index) => {
               return (
-                <Button key={index} onClick={buttonProp.onClick}>
-                  {buttonProp.text}
+                <Button key={index} onClick={buttonProps.onClick}>
+                  {buttonProps.text}
                 </Button>
               );
             })}
+            {switchProps ? (
+              <FormGroup>
+                <FormControlLabel control={<Switch onChange={switchProps.onChange} />} label={switchProps.label} />
+              </FormGroup>
+            ) : null}
           </CardActions>
         </Container>
       </Card>
