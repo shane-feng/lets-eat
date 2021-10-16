@@ -1,7 +1,8 @@
 import { useState, useEffect, useMemo } from 'react';
-import { getFoodsToEat } from '../../api/apiService';
 import FoodList from '../FoodList/FoodList';
 import FoodItem from '../FoodItem/FoodItem';
+import { getFoodsToEat } from '../../api/apiService';
+import { decodeDataUri } from '../../utils';
 
 import { Grid } from '@mui/material';
 
@@ -17,12 +18,6 @@ function Eat() {
     } catch (e) {
       console.log(e);
     }
-  };
-
-  const decodeDataUri = (buffer) => {
-    const encoded = Buffer.from(buffer).toString('base64');
-    const uri = window.atob(encoded);
-    return uri;
   };
 
   const renderFoods = useMemo(() => {

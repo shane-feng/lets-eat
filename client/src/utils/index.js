@@ -11,3 +11,9 @@ export const setSessionData = (data) => {
 export const clearSessionData = () => {
   localStorage.clear();
 };
+
+export const decodeDataUri = (buffer) => {
+  const encoded = Buffer.from(buffer).toString('base64');
+  const uri = window.atob(encoded);
+  return uri;
+};
