@@ -23,6 +23,15 @@ export const logoutUser = async () => {
   return res;
 };
 
+// fetch all foods
+export const getsFoods = async () => {
+  const { session } = getSessionData();
+  const res = await apiService.get('/foods', {
+    headers: { Authorization: `Bearer ${session.token}` },
+  });
+  return res;
+};
+
 // fetch foods to be eaten today
 export const getFoodsToEat = async () => {
   const { session } = getSessionData();

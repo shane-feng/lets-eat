@@ -40,7 +40,6 @@ function Eat() {
 
   const renderFoods = useMemo(() => {
     return foods?.map((food) => {
-      console.log(food);
       const imgUri = formatDataUri(food.picture.data);
 
       return (
