@@ -46,8 +46,12 @@ function FoodItem({ food, img, buttonProps }) {
           <Typography variant="h6">{food.name}</Typography>
         </CardContent>
         <CardActions disableSpacing sx={cardActionsStyle}>
-          {buttonProps?.map((buttonProp) => {
-            return <Button onClick={buttonProp.onClick}>{buttonProp.text}</Button>;
+          {buttonProps?.map((buttonProp, index) => {
+            return (
+              <Button key={index} onClick={buttonProp.onClick}>
+                {buttonProp.text}
+              </Button>
+            );
           })}
         </CardActions>
       </Container>

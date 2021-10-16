@@ -24,7 +24,7 @@ export const logoutUser = async () => {
 };
 
 // fetch all foods
-export const getsFoods = async () => {
+export const getFoods = async () => {
   const { session } = getSessionData();
   const res = await apiService.get('/foods', {
     headers: { Authorization: `Bearer ${session.token}` },

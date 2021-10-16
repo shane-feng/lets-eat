@@ -1,12 +1,9 @@
 import { useState, useEffect, useMemo } from 'react';
 import { getFoodsToEat } from '../../api/apiService';
+import FoodList from '../FoodList/FoodList';
 import FoodItem from '../FoodItem/FoodItem';
 
-import { Container, Grid, Typography } from '@mui/material';
-
-const containerStyle = { textAlign: 'center', paddingBottom: '50px' };
-
-const gridContainerStyle = { justifyContent: 'center', marginTop: '50px' };
+import { Grid } from '@mui/material';
 
 const gridItemStyle = { justifyContent: 'center' };
 
@@ -22,7 +19,7 @@ function Eat() {
     }
   };
 
-  const formatDataUri = (buffer) => {
+  const decodeDataUri = (buffer) => {
     const encoded = Buffer.from(buffer).toString('base64');
     const uri = window.atob(encoded);
     return uri;
@@ -30,7 +27,7 @@ function Eat() {
 
   const renderFoods = useMemo(() => {
     return foods?.map((food) => {
-      const imgUri = formatDataUri(food.picture.data);
+      const imgUri = decodeDataUri(food.picture.data);
 
       return (
         <Grid item key={food._id} xs={10} md={6} sx={gridItemStyle}>
@@ -44,16 +41,7 @@ function Eat() {
     fetchFoods();
   }, []);
 
-  return (
-    <Container maxWidth="md" sx={containerStyle}>
-      <Typography variant="h5" component="div">
-        Lets Eat These Today . . .
-      </Typography>
-      <Grid container spacing={2} sx={gridContainerStyle}>
-        {renderFoods}
-      </Grid>
-    </Container>
-  );
+  return <FoodList foods={renderFoods} title={'Lets Eat These Today . . .'} />;
 }
 
 export default Eat;
