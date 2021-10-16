@@ -1,24 +1,14 @@
 import { useState, useEffect, useMemo } from 'react';
 import { getFoodsToEat } from '../../api/apiService';
+import FoodItem from '../FoodItem/FoodItem';
 
-import { Container, Grid, Card, CardContent, CardMedia, CardActionArea, Typography } from '@mui/material';
+import { Container, Grid, Typography } from '@mui/material';
 
-const containerStyle = { textAlign: 'center' };
+const containerStyle = { textAlign: 'center', paddingBottom: '50px' };
 
 const gridContainerStyle = { justifyContent: 'center', marginTop: '50px' };
 
 const gridItemStyle = { justifyContent: 'center' };
-
-const cardStyle = { maxWidth: '350px', marginLeft: 'auto', marginRight: 'auto' };
-
-const cardMediaStyle = {
-  width: '100%',
-  height: '150px',
-  marginLeft: 'auto',
-  marginRight: 'auto',
-  objectFit: 'contain',
-  background: '#F8F8F7',
-};
 
 function Eat() {
   const [foods, setFoods] = useState();
@@ -43,17 +33,8 @@ function Eat() {
       const imgUri = formatDataUri(food.picture.data);
 
       return (
-        <Grid item key={food._id} xs={10} md={6} lg={4} sx={gridItemStyle}>
-          <Card sx={cardStyle}>
-            <CardActionArea>
-              <CardMedia component="img" image={imgUri} alt="Food Image" sx={cardMediaStyle} />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  {food.name}
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
+        <Grid item key={food._id} xs={10} md={6} sx={gridItemStyle}>
+          <FoodItem food={food} img={imgUri} />
         </Grid>
       );
     });
