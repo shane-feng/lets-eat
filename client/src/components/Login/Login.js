@@ -28,7 +28,7 @@ function Login() {
     try {
       const { data } = await loginUser(email, password);
       setSessionData({ id: data.user._id, email: data.user.email, token: data.token });
-      history.push('/menu');
+      history.push('/eat');
     } catch (error) {
       console.log(error);
     }

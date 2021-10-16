@@ -5,9 +5,8 @@ const Food = require('../models/food');
 const router = express.Router();
 
 router.post('/', auth, async (req, res) => {
-  const food = new Food({ ...req.body, owner: req.user._id });
-
   try {
+    const food = new Food({ ...req.body, owner: req.user._id });
     await food.save();
     res.status(201).send(food);
   } catch (error) {

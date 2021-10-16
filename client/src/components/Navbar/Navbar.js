@@ -70,7 +70,7 @@ function Navbar() {
       <MenuItem
         sx={menuItemStyle}
         onClick={() => {
-          history.push('/');
+          history.push('/eat');
           handleMobileMenuClose();
         }}
       >
@@ -110,7 +110,14 @@ function Navbar() {
           Welcome
         </Typography>
         <nav>
-          <Link sx={navbarItemStyles} href="/eat" variant="button" underline="hover" color="textPrimary">
+          <Link
+            sx={navbarItemStyles}
+            href="/eat"
+            variant="button"
+            underline="hover"
+            color="textPrimary"
+            onClick={() => history.push('/eat')}
+          >
             Let's eat
           </Link>
           <Link sx={navbarItemStyles} href="/menu" variant="button" underline="hover" color="textPrimary">
