@@ -42,3 +42,11 @@ export const getFoodsToEat = async () => {
   });
   return res;
 };
+
+export const createFood = async (food) => {
+  const { session } = getSessionData();
+  const res = await apiService.post('/foods', food, {
+    headers: { Authorization: `Bearer ${session.token}` },
+  });
+  return res;
+};
