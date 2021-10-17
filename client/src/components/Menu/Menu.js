@@ -13,7 +13,7 @@ function Menu() {
   }, []);
 
   const switchProps = useMemo(() => {
-    return { label: 'Lets Eat', onChange: () => {} };
+    return { label: 'Eat', onChange: () => {} };
   }, []);
 
   const fetchFoods = async () => {

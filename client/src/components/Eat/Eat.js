@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import FoodList from '../FoodList/FoodList';
 import { getFoodsToEat } from '../../api/apiService';
 

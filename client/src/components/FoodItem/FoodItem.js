@@ -1,4 +1,5 @@
 import {
+  Box,
   Grid,
   Card,
   CardContent,
@@ -42,15 +43,18 @@ const containerStyle = {
 };
 
 const cardContentStyle = {
-  height: '70%',
+  height: '60%',
   display: 'grid',
   alignItems: 'center',
 };
 
 const cardActionsStyle = {
-  height: '30%',
-  display: 'flex',
-  justifyContent: 'center',
+  height: '40%',
+  display: {
+    xs: 'flex',
+    md: 'grid',
+  },
+  justifyContent: { xs: 'space-around', md: 'center' },
 };
 
 function FoodItem({ food, img, buttonsProps, switchProps }) {
@@ -63,18 +67,25 @@ function FoodItem({ food, img, buttonsProps, switchProps }) {
             <Typography variant="h6">{food.name}</Typography>
           </CardContent>
           <CardActions disableSpacing sx={cardActionsStyle}>
-            {buttonsProps?.map((buttonProps, index) => {
-              return (
-                <Button key={index} onClick={buttonProps.onClick}>
-                  {buttonProps.text}
-                </Button>
-              );
-            })}
             {switchProps ? (
               <FormGroup>
-                <FormControlLabel control={<Switch onChange={switchProps.onChange} />} label={switchProps.label} />
+                <FormControlLabel
+                  sx={{ display: 'flex', justifyContent: 'center' }}
+                  control={<Switch onChange={switchProps.onChange} />}
+                  label={switchProps.label}
+                  labelPlacement="end"
+                />
               </FormGroup>
             ) : null}
+            <Box sx={{ display: 'flex' }}>
+              {buttonsProps?.map((buttonProps, index) => {
+                return (
+                  <Button key={index} onClick={buttonProps.onClick}>
+                    {buttonProps.text}
+                  </Button>
+                );
+              })}
+            </Box>
           </CardActions>
         </Container>
       </Card>
