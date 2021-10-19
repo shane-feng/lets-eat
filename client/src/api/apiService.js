@@ -80,6 +80,18 @@ export const updateFood = async ({ _id, name, picture }) => {
   return res;
 };
 
+// update food to eat date to today
+export const updateFoodToEatDate = async (foodId, date) => {
+  const { session } = getSessionData();
+  const queryPath = `/foods/${foodId}`;
+  const res = await apiService.patch(
+    queryPath,
+    { dateToEat: date },
+    { headers: { Authorization: `Bearer ${session.token}` } }
+  );
+  return res;
+};
+
 export const deleteFood = async (foodId) => {
   const { session } = getSessionData();
   const queryPath = `/foods/${foodId}`;
