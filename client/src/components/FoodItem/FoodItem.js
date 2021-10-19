@@ -75,7 +75,7 @@ const boxStyle = {
 function FoodItem({ food, img, buttonsProps, switchProps }) {
   const buttons = buttonsProps?.map((buttonProps, index) => {
     return (
-      <Button key={index} onClick={() => buttonProps.onClick(food?._id)}>
+      <Button key={index} onClick={() => buttonProps.onClick(food)}>
         {buttonProps.text}
       </Button>
     );

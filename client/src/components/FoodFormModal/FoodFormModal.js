@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { createFood } from '../../api/apiService';
+import { useState, useEffect } from 'react';
+import { createFood, updateFood } from '../../api/apiService';
 
 import { Card, CardMedia, Modal, Backdrop, Fade, Box, Grid, Typography, Button, styled } from '@mui/material';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
@@ -70,7 +70,7 @@ const Input = styled('input')({
   display: 'none',
 });
 
-function FoodFormModal({ isFoodFormModalOpen, setIsFoodFormModalOpen, handleCloseModal, addFood, fetchFoods }) {
+function FoodFormModal({ isFoodFormModalOpen, handleCloseModal, addFoodMode, editFoodItemId, fetchFoods }) {
   const [foodName, setFoodName] = useState('');
   const [foodPicture, setFoodPicture] = useState();
 
@@ -100,13 +100,24 @@ function FoodFormModal({ isFoodFormModalOpen, setIsFoodFormModalOpen, handleClos
     e.preventDefault();
     const food = { name: foodName, picture: foodPicture };
     try {
-      await createFood(food);
-      fetchFoods();
-      setIsFoodFormModalOpen(false);
+      if (addFoodMode) {
+        await createFood(food);
+        fetchFoods();
+        handleCloseModal();
+      } else {
+        await updateFood({ _id: editFoodItemId, ...food });
+        fetchFoods();
+        handleCloseModal();
+      }
     } catch (e) {
       console.log(e);
     }
   };
+
+  useEffect(() => {
+    setFoodName('');
+    setFoodPicture('');
+  }, [handleCloseModal]);
 
   return (
     <Modal
@@ -120,7 +131,7 @@ function FoodFormModal({ isFoodFormModalOpen, setIsFoodFormModalOpen, handleClos
     >
       <Fade in={isFoodFormModalOpen}>
         <Box sx={boxStyle}>
-          <Typography variant="h6">{addFood ? 'Add Food' : 'Edit Food'}</Typography>
+          <Typography variant="h6">{addFoodMode ? 'Add Food' : 'Edit Food'}</Typography>
           <ValidatorForm onSubmit={handleSubmit}>
             <Grid container spacing={2} sx={gridContainerStyle}>
               <Grid item xs={10}>
@@ -162,7 +173,7 @@ function FoodFormModal({ isFoodFormModalOpen, setIsFoodFormModalOpen, handleClos
               </Grid>
               <Grid item xs={6}>
                 <Button variant="contained" type="submit" size="small" sx={buttonStyle}>
-                  {addFood ? 'Add Food' : 'Edit Food'}{' '}
+                  {addFoodMode ? 'Add Food' : 'Edit Food'}{' '}
                 </Button>
               </Grid>
             </Grid>

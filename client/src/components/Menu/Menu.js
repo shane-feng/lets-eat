@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import FoodList from '../FoodList/FoodList';
 import FoodFormModal from '../FoodFormModal/FoodFormModal';
 import { getFoods, deleteFood } from '../../api/apiService';
@@ -37,6 +37,20 @@ function Menu() {
   const [foods, setFoods] = useState();
   const [isFoodFormModalOpen, setIsFoodFormModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [addFoodMode, setAddFoodMode] = useState(false);
+  const [editFoodItemId, setEditFoodItemId] = useState('');
+  const handleOpenAddFoodFormModal = () => {
+    setAddFoodMode(true);
+    setIsFoodFormModalOpen(true);
+  };
+
+  const handleOpenEditFoodFormModal = useCallback((food) => {
+    setAddFoodMode(false);
+    setEditFoodItemId(food._id);
+    setIsFoodFormModalOpen(true);
+  }, []);
+
+  const handleCloseModal = () => setIsFoodFormModalOpen(false);
 
   const fetchFoods = async () => {
     try {
@@ -48,9 +62,9 @@ function Menu() {
     }
   };
 
-  const deleteFoodItem = useMemo(async (foodId) => {
+  const deleteFoodItem = useCallback(async (food) => {
     try {
-      await deleteFood(foodId);
+      await deleteFood(food?._id);
       fetchFoods();
     } catch (e) {
       console.log(e);
@@ -61,26 +75,21 @@ function Menu() {
     return [
       {
         text: 'Edit',
-        onClick: () => {},
+        onClick: handleOpenEditFoodFormModal,
       },
       {
         text: 'Delete',
         onClick: deleteFoodItem,
       },
     ];
-  }, [deleteFoodItem]);
+  }, [handleOpenEditFoodFormModal, deleteFoodItem]);
 
   const switchProps = useMemo(() => {
     return { label: 'Eat', onChange: () => {} };
   }, []);
 
-  const handleOpenModal = () => setIsFoodFormModalOpen(true);
-
-  const handleCloseModal = () => setIsFoodFormModalOpen(false);
-
-  useEffect(() => {}, []);
-
   useEffect(() => {
+    handleCloseModal();
     setLoading(true);
     fetchFoods();
   }, []);
@@ -91,7 +100,7 @@ function Menu() {
         What Should We Eat?
       </Typography>
       <Box sx={boxStyle}>
-        <Button sx={addFoodButtonStyle} variant="contained" size="large" onClick={handleOpenModal}>
+        <Button sx={addFoodButtonStyle} variant="contained" size="large" onClick={handleOpenAddFoodFormModal}>
           Add Food
         </Button>
       </Box>
@@ -102,9 +111,9 @@ function Menu() {
       )}
       <FoodFormModal
         isFoodFormModalOpen={isFoodFormModalOpen}
-        setIsFoodFormModalOpen={setIsFoodFormModalOpen}
         handleCloseModal={handleCloseModal}
-        addFood={true}
+        addFoodMode={addFoodMode}
+        editFoodItemId={editFoodItemId}
         fetchFoods={fetchFoods}
       />
     </Container>
