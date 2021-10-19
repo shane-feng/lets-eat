@@ -39,7 +39,7 @@ router.get('/', auth, async (req, res) => {
         return (
           dateToEat?.getFullYear() == today.getFullYear() &&
           dateToEat?.getMonth() == today.getMonth() &&
-          dateToEat?.getDate() + 1 == today.getDate()
+          dateToEat?.getDate() == today.getDate()
         );
       });
       res.send(filteredResults);
@@ -76,6 +76,22 @@ router.patch('/:id', auth, async (req, res) => {
     }
 
     updateFields.forEach((update) => (food[update] = req.body[update]));
+    await food.save();
+    res.send(food);
+  } catch (e) {
+    res.status(400).send(e);
+  }
+});
+
+// update food item to be eaten date to either today or not today
+router.patch('/:id', auth, async (req, res) => {
+  try {
+    const food = await Food.findOne({ _id: req.params.id, owner: req.user._id });
+
+    if (!food) {
+      return res.status(404).send();
+    }
+    food.dateToEat = req.body.dateToEat;
     await food.save();
     res.send(food);
   } catch (e) {
