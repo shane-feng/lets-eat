@@ -7,17 +7,15 @@ import Menu from '../Menu/Menu';
 
 function App() {
   return (
-    <div>
-      <Router>
-        <Navbar />
-        <Switch>
-          <Route exact path={'/signup'} component={Signup} />
-          <Route exact path={'/login'} component={Login} />
-          <Route exact path={'/eat'} component={Eat} />
-          <Route exact path={'/menu'} component={Menu} />
-        </Switch>
-      </Router>
-    </div>
+    <Router>
+      <Navbar />
+      <Switch>
+        <Route exact path={'/signup'} component={Signup} />
+        <Route exact path={'/login'} component={Login} />
+        <Route exact path={'/eat'} component={Eat} />
+        <Route exact path={'/menu'} component={Menu} />
+      </Switch>
+    </Router>
   );
 }
 

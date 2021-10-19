@@ -43,8 +43,8 @@ router.get('/', auth, async (req, res) => {
         );
       });
       res.send(filteredResults);
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      console.log(error);
       res.status(500).send();
     }
   } else {

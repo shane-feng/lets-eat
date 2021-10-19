@@ -6,8 +6,6 @@ import { getFoods, deleteFood } from '../../api/apiService';
 import { Container, Box, Typography, Button, CircularProgress } from '@mui/material';
 
 const containerStyle = {
-  display: 'grid',
-  justifyContent: 'center',
   textAlign: 'center',
 };
 
@@ -17,19 +15,16 @@ const circularProgressStyle = {
 };
 
 const boxStyle = {
-  width: '860px',
   padding: '0 24px',
   display: 'grid',
+  justifyContent: 'center',
 };
 
 const addFoodButtonStyle = {
+  width: '150px',
   marginTop: {
     xs: '40px',
-    md: '10px',
-  },
-  justifySelf: {
-    xs: 'center',
-    md: 'end',
+    md: '20px',
   },
 };
 
@@ -57,8 +52,8 @@ function Menu() {
       const { data } = await getFoods();
       setFoods(data);
       setLoading(false);
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -66,8 +61,8 @@ function Menu() {
     try {
       await deleteFood(food?._id);
       fetchFoods();
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      console.log(error);
     }
   }, []);
 
@@ -104,18 +99,20 @@ function Menu() {
           Add Food
         </Button>
       </Box>
-      {loading ? (
-        <CircularProgress size={80} sx={circularProgressStyle} />
-      ) : (
-        <FoodList foods={foods} buttonsProps={buttonsProps} switchProps={switchProps} />
-      )}
-      <FoodFormModal
-        isFoodFormModalOpen={isFoodFormModalOpen}
-        handleCloseModal={handleCloseModal}
-        addFoodMode={addFoodMode}
-        editFoodItemId={editFoodItemId}
-        fetchFoods={fetchFoods}
-      />
+      <Box>
+        {loading ? (
+          <CircularProgress size={80} sx={circularProgressStyle} />
+        ) : (
+          <FoodList foods={foods} buttonsProps={buttonsProps} switchProps={switchProps} />
+        )}
+        <FoodFormModal
+          isFoodFormModalOpen={isFoodFormModalOpen}
+          handleCloseModal={handleCloseModal}
+          addFoodMode={addFoodMode}
+          editFoodItemId={editFoodItemId}
+          fetchFoods={fetchFoods}
+        />
+      </Box>
     </Container>
   );
 }

@@ -6,7 +6,10 @@ import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 
 const boxStyle = {
-  height: 480,
+  height: {
+    xs: '400px',
+    md: '480px',
+  },
   maxWidth: 400,
   minWidth: 250,
   position: 'absolute',
@@ -28,6 +31,10 @@ const gridContainerStyle = {
 
 const gridItemStyle = {
   padding: 0,
+};
+
+const foodNameTextContainerStyle = {
+  height: '100px',
 };
 
 const textFieldStyle = {
@@ -91,8 +98,8 @@ function FoodFormModal({ isFoodFormModalOpen, handleCloseModal, addFoodMode, edi
     try {
       const results = await readFileAsync(event.target.files[0]);
       setFoodPicture(results.dataUri);
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -109,8 +116,8 @@ function FoodFormModal({ isFoodFormModalOpen, handleCloseModal, addFoodMode, edi
         fetchFoods();
         handleCloseModal();
       }
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -134,7 +141,7 @@ function FoodFormModal({ isFoodFormModalOpen, handleCloseModal, addFoodMode, edi
           <Typography variant="h6">{addFoodMode ? 'Add Food' : 'Edit Food'}</Typography>
           <ValidatorForm onSubmit={handleSubmit}>
             <Grid container spacing={2} sx={gridContainerStyle}>
-              <Grid item xs={10}>
+              <Grid item xs={12} sx={foodNameTextContainerStyle}>
                 <TextValidator
                   label="Food Name"
                   InputLabelProps={{ shrink: true }}
@@ -148,7 +155,7 @@ function FoodFormModal({ isFoodFormModalOpen, handleCloseModal, addFoodMode, edi
                   errorMessages={['This field is required']}
                 />
               </Grid>
-              <Grid item xs={10} sx={gridItemStyle}>
+              <Grid item xs={12} sx={gridItemStyle}>
                 <Card sx={imagePreviewGridStyle}>
                   {foodPicture ? (
                     <CardMedia component="img" image={foodPicture} alt="Food Image" sx={cardMediaStyle} />
@@ -173,7 +180,7 @@ function FoodFormModal({ isFoodFormModalOpen, handleCloseModal, addFoodMode, edi
               </Grid>
               <Grid item xs={6}>
                 <Button variant="contained" type="submit" size="small" sx={buttonStyle}>
-                  {addFoodMode ? 'Add Food' : 'Edit Food'}{' '}
+                  Submit
                 </Button>
               </Grid>
             </Grid>

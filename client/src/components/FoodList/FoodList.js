@@ -2,13 +2,13 @@ import { useMemo } from 'react';
 import FoodItem from '../FoodItem/FoodItem';
 import { decodeDataUri } from '../../utils';
 
-import { Container, Grid, Typography } from '@mui/material';
+import { Container, Grid } from '@mui/material';
 
 const containerStyle = { textAlign: 'center', paddingBottom: '50px' };
 
 const gridContainerStyle = { justifyContent: 'center', marginTop: '50px' };
 
-function FoodList({ foods, title, buttonsProps, switchProps }) {
+function FoodList({ foods, buttonsProps, switchProps }) {
   const renderFoods = useMemo(() => {
     return foods?.map((food, index) => {
       const imgUri = food.picture ? decodeDataUri(food.picture.data) : '';
@@ -18,10 +18,7 @@ function FoodList({ foods, title, buttonsProps, switchProps }) {
   }, [foods, buttonsProps, switchProps]);
 
   return (
-    <Container maxWidth="md" sx={containerStyle}>
-      <Typography variant="h5" component="div">
-        {title}
-      </Typography>
+    <Container sx={containerStyle}>
       <Grid container spacing={2} sx={gridContainerStyle}>
         {renderFoods}
       </Grid>

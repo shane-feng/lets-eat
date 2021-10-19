@@ -9,8 +9,8 @@ function Eat() {
     try {
       const { data } = await getFoodsToEat();
       setFoods(data);
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      console.log(error);
     }
   };
 

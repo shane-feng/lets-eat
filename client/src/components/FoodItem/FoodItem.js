@@ -21,9 +21,9 @@ const cardStyle = {
   display: {
     md: 'flex',
   },
-  maxWidth: {
+  width: {
     xs: '300px',
-    md: '600px',
+    md: '520px',
   },
   marginLeft: 'auto',
   marginRight: 'auto',
@@ -82,7 +82,7 @@ function FoodItem({ food, img, buttonsProps, switchProps }) {
   });
 
   return (
-    <Grid item key={food._id} xs={10} md={6} sx={gridItemStyle}>
+    <Grid item key={food._id} xs={12} lg={6} sx={gridItemStyle}>
       <Card sx={cardStyle}>
         <CardMedia component="img" image={img} alt="Food Image" sx={cardMediaStyle} />
         <Container disableGutters sx={containerStyle}>
