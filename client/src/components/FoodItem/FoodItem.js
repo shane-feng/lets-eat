@@ -57,10 +57,30 @@ const cardActionsStyle = {
     xs: 'flex',
     md: 'grid',
   },
-  justifyContent: { xs: 'space-around', md: 'center' },
+  justifyContent: {
+    xs: 'space-around',
+    md: 'center',
+  },
+};
+
+const formControlLabelStyle = {
+  display: 'flex',
+  justifyContent: 'center',
+};
+
+const boxStyle = {
+  display: 'flex',
 };
 
 function FoodItem({ food, img, buttonsProps, switchProps }) {
+  const buttons = buttonsProps?.map((buttonProps, index) => {
+    return (
+      <Button key={index} onClick={() => buttonProps.onClick(food?._id)}>
+        {buttonProps.text}
+      </Button>
+    );
+  });
+
   return (
     <Grid item key={food._id} xs={10} md={6} sx={gridItemStyle}>
       <Card sx={cardStyle}>
@@ -73,22 +93,14 @@ function FoodItem({ food, img, buttonsProps, switchProps }) {
             {switchProps ? (
               <FormGroup>
                 <FormControlLabel
-                  sx={{ display: 'flex', justifyContent: 'center' }}
+                  sx={formControlLabelStyle}
                   control={<Switch onChange={switchProps.onChange} />}
                   label={switchProps.label}
                   labelPlacement="end"
                 />
               </FormGroup>
             ) : null}
-            <Box sx={{ display: 'flex' }}>
-              {buttonsProps?.map((buttonProps, index) => {
-                return (
-                  <Button key={index} onClick={buttonProps.onClick}>
-                    {buttonProps.text}
-                  </Button>
-                );
-              })}
-            </Box>
+            <Box sx={boxStyle}>{buttons}</Box>
           </CardActions>
         </Container>
       </Card>

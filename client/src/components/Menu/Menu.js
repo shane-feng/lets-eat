@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import FoodList from '../FoodList/FoodList';
 import FoodFormModal from '../FoodFormModal/FoodFormModal';
-import { getFoods } from '../../api/apiService';
+import { getFoods, deleteFood } from '../../api/apiService';
 
 import { Container, Box, Typography, Button, CircularProgress } from '@mui/material';
 
@@ -36,22 +36,7 @@ const addFoodButtonStyle = {
 function Menu() {
   const [foods, setFoods] = useState();
   const [isFoodFormModalOpen, setIsFoodFormModalOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
-
-  const buttonsProps = useMemo(() => {
-    return [
-      { text: 'Edit', onClick: () => {} },
-      { text: 'Delete', onClick: () => {} },
-    ];
-  }, []);
-
-  const switchProps = useMemo(() => {
-    return { label: 'Eat', onChange: () => {} };
-  }, []);
-
-  const handleOpenModal = () => setIsFoodFormModalOpen(true);
-
-  const handleCloseModal = () => setIsFoodFormModalOpen(false);
+  const [loading, setLoading] = useState(false);
 
   const fetchFoods = async () => {
     try {
@@ -63,7 +48,40 @@ function Menu() {
     }
   };
 
+  const deleteFoodItem = useMemo(async (foodId) => {
+    try {
+      await deleteFood(foodId);
+      fetchFoods();
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
+
+  const buttonsProps = useMemo(() => {
+    return [
+      {
+        text: 'Edit',
+        onClick: () => {},
+      },
+      {
+        text: 'Delete',
+        onClick: deleteFoodItem,
+      },
+    ];
+  }, [deleteFoodItem]);
+
+  const switchProps = useMemo(() => {
+    return { label: 'Eat', onChange: () => {} };
+  }, []);
+
+  const handleOpenModal = () => setIsFoodFormModalOpen(true);
+
+  const handleCloseModal = () => setIsFoodFormModalOpen(false);
+
+  useEffect(() => {}, []);
+
   useEffect(() => {
+    setLoading(true);
     fetchFoods();
   }, []);
 
