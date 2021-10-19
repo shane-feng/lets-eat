@@ -17,3 +17,13 @@ export const decodeDataUri = (buffer) => {
   const uri = window.atob(encoded);
   return uri;
 };
+
+export const checkDateIsToday = (date) => {
+  const dateToCheck = new Date(date);
+  const today = new Date();
+  return (
+    dateToCheck?.getFullYear() === today.getFullYear() &&
+    dateToCheck?.getMonth() === today.getMonth() &&
+    dateToCheck?.getDate() === today.getDate()
+  );
+};
