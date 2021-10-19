@@ -12,14 +12,35 @@ export const signupUser = async (userInfo) => {
 
 export const loginUser = async (email, password) => {
   const queryPath = '/users/login';
-  const res = await apiService.post(queryPath, { email, password });
+  const res = await apiService.post(queryPath, {
+    email,
+    password,
+  });
   return res;
 };
 
 export const logoutUser = async () => {
   const { session } = getSessionData();
   const queryPath = '/users/logout';
-  const res = await apiService.post(queryPath, {}, { headers: { Authorization: `Bearer ${session.token}` } });
+  const res = await apiService.post(
+    queryPath,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${session.token}`,
+      },
+    }
+  );
+  return res;
+};
+
+export const createFood = async (food) => {
+  const { session } = getSessionData();
+  const res = await apiService.post('/foods', food, {
+    headers: {
+      Authorization: `Bearer ${session.token}`,
+    },
+  });
   return res;
 };
 
@@ -27,7 +48,9 @@ export const logoutUser = async () => {
 export const getFoods = async () => {
   const { session } = getSessionData();
   const res = await apiService.get('/foods', {
-    headers: { Authorization: `Bearer ${session.token}` },
+    headers: {
+      Authorization: `Bearer ${session.token}`,
+    },
   });
   return res;
 };
@@ -38,15 +61,20 @@ export const getFoodsToEat = async () => {
   const date = new Date();
   const res = await apiService.get('/foods', {
     params: { date },
-    headers: { Authorization: `Bearer ${session.token}` },
+    headers: {
+      Authorization: `Bearer ${session.token}`,
+    },
   });
   return res;
 };
 
-export const createFood = async (food) => {
+export const deleteFood = async (foodId) => {
   const { session } = getSessionData();
-  const res = await apiService.post('/foods', food, {
-    headers: { Authorization: `Bearer ${session.token}` },
+  const queryPath = `/foods/${foodId}`;
+  const res = await apiService.delete(queryPath, {
+    headers: {
+      Authorization: `Bearer ${session.token}`,
+    },
   });
   return res;
 };
