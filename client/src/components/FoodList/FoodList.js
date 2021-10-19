@@ -11,7 +11,7 @@ const gridContainerStyle = { justifyContent: 'center', marginTop: '50px' };
 function FoodList({ foods, title, buttonsProps, switchProps }) {
   const renderFoods = useMemo(() => {
     return foods?.map((food, index) => {
-      const imgUri = decodeDataUri(food.picture.data);
+      const imgUri = food.picture ? decodeDataUri(food.picture.data) : '';
 
       return <FoodItem key={index} food={food} img={imgUri} buttonsProps={buttonsProps} switchProps={switchProps} />;
     });

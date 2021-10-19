@@ -21,7 +21,10 @@ const cardStyle = {
   display: {
     md: 'flex',
   },
-  maxWidth: { xs: '300px', md: '600px' },
+  maxWidth: {
+    xs: '300px',
+    md: '600px',
+  },
   marginLeft: 'auto',
   marginRight: 'auto',
 };
