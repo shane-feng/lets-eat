@@ -1,3 +1,7 @@
+import { useCallback, useMemo } from 'react';
+import { updateFoodToEatDate } from '../../api/apiService';
+import { checkDateIsToday } from '../../utils';
+
 import {
   Box,
   Grid,
@@ -12,6 +16,7 @@ import {
   FormGroup,
   FormControlLabel,
 } from '@mui/material';
+import useEnhancedEffect from '@mui/utils/useEnhancedEffect';
 
 const gridItemStyle = {
   justifyContent: 'center',
@@ -72,7 +77,20 @@ const boxStyle = {
   display: 'flex',
 };
 
-function FoodItem({ food, img, buttonsProps, switchProps }) {
+function FoodItem({ food, img, buttonsProps }) {
+  const toggleEatFoodToday = useCallback(async () => {
+    const today = new Date();
+    try {
+      // if food already has toEatDate set to today - toggle off - return null
+      // if food has no toEatDate - toggle on - return today's date
+      // if food has toEatDate which is not today - toggle on - return today's date
+      const date = checkDateIsToday(food?.dateToEat) ? null : today;
+      await updateFoodToEatDate(food._id, date);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [food._id, food?.dateToEat]);
+
   const buttons = buttonsProps?.map((buttonProps, index) => {
     return (
       <Button key={index} onClick={() => buttonProps.onClick(food)}>
@@ -80,6 +98,14 @@ function FoodItem({ food, img, buttonsProps, switchProps }) {
       </Button>
     );
   });
+
+  const switchProps = useMemo(() => {
+    return { label: 'Eat', onChange: toggleEatFoodToday };
+  }, [toggleEatFoodToday]);
+
+  useEnhancedEffect(() => {
+    console.log(food);
+  }, []);
 
   return (
     <Grid item key={food._id} xs={12} lg={6} sx={gridItemStyle}>
@@ -94,8 +120,13 @@ function FoodItem({ food, img, buttonsProps, switchProps }) {
               <FormGroup>
                 <FormControlLabel
                   sx={formControlLabelStyle}
-                  control={<Switch onChange={switchProps.onChange} />}
-                  label={switchProps.label}
+                  control={
+                    <Switch
+                      defaultChecked={checkDateIsToday(food?.dateToEat) ? true : false}
+                      onChange={() => switchProps.onChange(food._id)}
+                    />
+                  }
+                  label={'Eat'}
                   labelPlacement="end"
                 />
               </FormGroup>

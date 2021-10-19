@@ -34,6 +34,7 @@ function Menu() {
   const [loading, setLoading] = useState(false);
   const [addFoodMode, setAddFoodMode] = useState(false);
   const [editFoodItemId, setEditFoodItemId] = useState('');
+
   const handleOpenAddFoodFormModal = () => {
     setAddFoodMode(true);
     setIsFoodFormModalOpen(true);
@@ -79,10 +80,6 @@ function Menu() {
     ];
   }, [handleOpenEditFoodFormModal, deleteFoodItem]);
 
-  const switchProps = useMemo(() => {
-    return { label: 'Eat', onChange: () => {} };
-  }, []);
-
   useEffect(() => {
     handleCloseModal();
     setLoading(true);
@@ -103,7 +100,7 @@ function Menu() {
         {loading ? (
           <CircularProgress size={80} sx={circularProgressStyle} />
         ) : (
-          <FoodList foods={foods} buttonsProps={buttonsProps} switchProps={switchProps} />
+          <FoodList foods={foods} buttonsProps={buttonsProps} />
         )}
         <FoodFormModal
           isFoodFormModalOpen={isFoodFormModalOpen}
