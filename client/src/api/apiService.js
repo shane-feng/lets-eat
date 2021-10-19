@@ -68,6 +68,18 @@ export const getFoodsToEat = async () => {
   return res;
 };
 
+export const updateFood = async ({ _id, name, picture }) => {
+  const data = { name, picture };
+  const { session } = getSessionData();
+  const queryPath = `/foods/${_id}`;
+  const res = await apiService.patch(queryPath, data, {
+    headers: {
+      Authorization: `Bearer ${session.token}`,
+    },
+  });
+  return res;
+};
+
 export const deleteFood = async (foodId) => {
   const { session } = getSessionData();
   const queryPath = `/foods/${foodId}`;
