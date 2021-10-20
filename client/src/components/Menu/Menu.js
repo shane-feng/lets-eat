@@ -1,9 +1,10 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback, useContext } from 'react';
 import { Redirect } from 'react-router-dom';
 import FoodList from '../FoodList/FoodList';
 import FoodFormModal from '../FoodFormModal/FoodFormModal';
 import { getFoods, deleteFood } from '../../api/apiService';
-import { getSessionData } from '../../utils';
+import { AuthContext } from '../../contexts/AuthContext';
+import { clearSessionData } from '../../utils';
 
 import { Container, Box, Typography, Button, CircularProgress } from '@mui/material';
 
@@ -36,6 +37,7 @@ function Menu() {
   const [isFoodFormModalOpen, setIsFoodFormModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [addFoodMode, setAddFoodMode] = useState(false);
+  const [auth] = useContext(AuthContext);
 
   const handleOpenAddFoodFormModal = () => {
     setAddFoodMode(true);
@@ -58,6 +60,10 @@ function Menu() {
       setLoading(false);
     } catch (error) {
       console.log(error);
+      // clears session data if user session data is ever invalidated
+      if (error.response.status === 401) {
+        clearSessionData();
+      }
     }
   };
 
@@ -67,6 +73,10 @@ function Menu() {
       fetchFoods();
     } catch (error) {
       console.log(error);
+      // clears session data if user session data is ever invalidated
+      if (error.response.status === 401) {
+        clearSessionData();
+      }
     }
   }, []);
 
@@ -84,10 +94,12 @@ function Menu() {
   }, [handleOpenEditFoodFormModal, deleteFoodItem]);
 
   useEffect(() => {
-    fetchFoods();
-  }, []);
+    if (auth) {
+      fetchFoods();
+    }
+  }, [auth]);
 
-  if (!getSessionData()) {
+  if (!auth) {
     return <Redirect to="/login" />;
   }
 

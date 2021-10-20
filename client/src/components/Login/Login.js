@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useHistory, Redirect } from 'react-router-dom';
 import { loginUser } from '../../api/apiService';
-import { setSessionData, getSessionData } from '../../utils';
+import { setSessionData, clearSessionData } from '../../utils';
+import { AuthContext } from '../../contexts/AuthContext';
 
 import { Container, Grid, Button } from '@mui/material';
 import { Typography } from '@mui/material';
@@ -20,21 +21,25 @@ const buttonContainerStyle = { marginTop: '10px', padding: '0 50px', justifyCont
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
   const history = useHistory();
+  const [auth, setAuth] = useContext(AuthContext);
 
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
       const { data } = await loginUser(email, password);
       setSessionData({ id: data.user._id, email: data.user.email, token: data.token });
+      setAuth(true);
       history.push('/eat');
     } catch (error) {
       console.log(error);
+      if (error.response.status === 401) {
+        clearSessionData();
+      }
     }
   };
 
-  if (getSessionData()) {
+  if (auth) {
     return <Redirect to="/about" />;
   }
 

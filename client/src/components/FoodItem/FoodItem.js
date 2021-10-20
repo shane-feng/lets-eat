@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { updateFoodToEatDate } from '../../api/apiService';
-import { checkDateIsToday } from '../../utils';
+import { checkDateIsToday, clearSessionData } from '../../utils';
 
 import {
   Box,
@@ -90,6 +90,10 @@ function FoodItem({ food, isEatFoodListItem, img, buttonsProps }) {
       setIsEatToday(!isEatToday);
     } catch (error) {
       console.log(error);
+      // clears session data if user session data is ever invalidated
+      if (error.response.status === 401) {
+        clearSessionData();
+      }
     }
   }, [isEatToday, food._id, food.dateToEat]);
 

@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useHistory, Redirect } from 'react-router-dom';
 import { signupUser } from '../../api/apiService';
-import { setSessionData, getSessionData } from '../../utils';
+import { setSessionData } from '../../utils';
+import { AuthContext } from '../../contexts/AuthContext';
 
 import { Container, Grid, Typography, Button } from '@mui/material';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
@@ -21,8 +22,8 @@ function Signup() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [password, setPassword] = useState('');
-
   const history = useHistory();
+  const [auth, setAuth] = useContext(AuthContext);
 
   const handleSignup = async (event) => {
     event.preventDefault();
@@ -30,13 +31,14 @@ function Signup() {
     try {
       const { data } = await signupUser({ email, firstName, lastName, password });
       setSessionData({ id: data.user._id, email: data.user.email, token: data.token });
+      setAuth(true);
       history.push('/eat');
     } catch (error) {
       console.log(error);
     }
   };
 
-  if (getSessionData()) {
+  if (auth) {
     return <Redirect to="/about" />;
   }
 
