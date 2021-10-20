@@ -42,6 +42,7 @@ router.get('/', auth, async (req, res) => {
           dateToEat?.getDate() == today.getDate()
         );
       });
+
       res.send(filteredResults);
     } catch (error) {
       console.log(error);

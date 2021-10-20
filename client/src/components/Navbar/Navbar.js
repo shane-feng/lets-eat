@@ -51,10 +51,6 @@ function Navbar() {
       history.push('/');
     } catch (error) {
       console.log(error);
-      // clears session data if user session data is ever invalidated
-      if (error.response.status === 401) {
-        clearSessionData();
-      }
     }
   };
 

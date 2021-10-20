@@ -4,7 +4,6 @@ import FoodList from '../FoodList/FoodList';
 import FoodFormModal from '../FoodFormModal/FoodFormModal';
 import { getFoods, deleteFood } from '../../api/apiService';
 import { AuthContext } from '../../contexts/AuthContext';
-import { clearSessionData } from '../../utils';
 
 import { Container, Box, Typography, Button, CircularProgress } from '@mui/material';
 
@@ -60,10 +59,6 @@ function Menu() {
       setLoading(false);
     } catch (error) {
       console.log(error);
-      // clears session data if user session data is ever invalidated
-      if (error.response.status === 401) {
-        clearSessionData();
-      }
     }
   };
 
@@ -73,10 +68,6 @@ function Menu() {
       fetchFoods();
     } catch (error) {
       console.log(error);
-      // clears session data if user session data is ever invalidated
-      if (error.response.status === 401) {
-        clearSessionData();
-      }
     }
   }, []);
 

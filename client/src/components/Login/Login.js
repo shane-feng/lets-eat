@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import { useHistory, Redirect } from 'react-router-dom';
 import { loginUser } from '../../api/apiService';
-import { setSessionData, clearSessionData } from '../../utils';
+import { setSessionData } from '../../utils';
 import { AuthContext } from '../../contexts/AuthContext';
 
 import { Container, Grid, Button } from '@mui/material';
@@ -33,10 +33,6 @@ function Login() {
       history.push('/eat');
     } catch (error) {
       console.log(error);
-      // clears session data if user session data is ever invalidated
-      if (error.response.status === 401) {
-        clearSessionData();
-      }
     }
   };
 

@@ -3,7 +3,6 @@ import { Redirect } from 'react-router-dom';
 import FoodList from '../FoodList/FoodList';
 import { getFoodsToEat } from '../../api/apiService';
 import { AuthContext } from '../../contexts/AuthContext';
-import { clearSessionData } from '../../utils';
 
 import { Container, Typography, CircularProgress } from '@mui/material';
 
@@ -33,10 +32,6 @@ function Eat() {
       setLoading(false);
     } catch (error) {
       console.log(error);
-      // clears session data if user session data is ever invalidated
-      if (error.response.status === 401) {
-        clearSessionData();
-      }
     }
   };
 
