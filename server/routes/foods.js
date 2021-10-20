@@ -36,10 +36,11 @@ router.get('/', auth, async (req, res) => {
     try {
       const results = await Food.find({ owner: req.user._id });
       filteredResults = results.filter(({ dateToEat }) => {
+        const dateToCompare = new Date(dateToEat);
         return (
-          dateToEat?.getFullYear() == today.getFullYear() &&
-          dateToEat?.getMonth() == today.getMonth() &&
-          dateToEat?.getDate() == today.getDate()
+          dateToCompare.getFullYear() == today.getFullYear() &&
+          dateToCompare.getMonth() == today.getMonth() &&
+          dateToCompare.getDate() == today.getDate()
         );
       });
 
