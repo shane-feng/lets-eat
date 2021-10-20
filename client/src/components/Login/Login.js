@@ -41,7 +41,7 @@ function Login() {
   };
 
   if (auth) {
-    return <Redirect to="/about" />;
+    return <Redirect to="/" />;
   }
 
   return (

@@ -139,7 +139,7 @@ function Navbar() {
         <nav>
           <Link
             sx={navbarItemStyles}
-            href="/eat"
+            href="/"
             variant="button"
             underline="hover"
             color="textPrimary"
