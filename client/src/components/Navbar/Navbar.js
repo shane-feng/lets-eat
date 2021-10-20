@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { logoutUser } from '../../api/apiService';
-import { getSessionData, clearSessionData } from '../../utils';
+import { clearSessionData } from '../../utils';
+import { AuthContext } from '../../contexts/AuthContext';
 
 import { AppBar, Toolbar, Typography, Button, Link, IconButton, Menu, MenuItem } from '@mui/material/';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -31,9 +32,9 @@ const menuItemStyle = {
 };
 
 function Navbar() {
-  const [loggedIn, setLoggedIn] = useState(false);
   // Sets html element for menu items position to be anchored to
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+  const [auth, setAuth] = useContext(AuthContext);
 
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const history = useHistory();
@@ -46,10 +47,14 @@ function Navbar() {
     try {
       await logoutUser();
       clearSessionData();
-      setLoggedIn(false);
-      history.push('/about');
+      setAuth(false);
+      history.push('/');
     } catch (error) {
       console.log(error);
+      // clears session data if user session data is ever invalidated
+      if (error.response.status === 401) {
+        clearSessionData();
+      }
     }
   };
 
@@ -73,13 +78,13 @@ function Navbar() {
       <MenuItem
         sx={menuItemStyle}
         onClick={() => {
-          history.push('/about');
+          history.push('/');
           handleMobileMenuClose();
         }}
       >
         About
       </MenuItem>
-      {loggedIn ? (
+      {auth ? (
         <MenuItem
           sx={menuItemStyle}
           onClick={() => {
@@ -90,7 +95,7 @@ function Navbar() {
           Let's Eat
         </MenuItem>
       ) : null}
-      {loggedIn ? (
+      {auth ? (
         <MenuItem
           sx={menuItemStyle}
           onClick={() => {
@@ -101,7 +106,7 @@ function Navbar() {
           Menu
         </MenuItem>
       ) : null}
-      {loggedIn ? null : (
+      {auth ? null : (
         <MenuItem
           sx={menuItemStyle}
           onClick={() => {
@@ -112,25 +117,18 @@ function Navbar() {
           Sign Up
         </MenuItem>
       )}
-      {loggedIn ? null : (
+      {auth ? null : (
         <MenuItem sx={menuItemStyle} onClick={() => history.push('/login')}>
           Login
         </MenuItem>
       )}
-      {loggedIn ? (
+      {auth ? (
         <MenuItem sx={menuItemStyle} onClick={handleLogoutUser}>
           Logout
         </MenuItem>
       ) : null}
     </Menu>
   );
-
-  useEffect(() => {
-    const { session } = getSessionData();
-    if (session) {
-      setLoggedIn(true);
-    }
-  }, []);
 
   return (
     <AppBar position="static" color="default" elevation={0} sx={appBarStyle}>
@@ -145,11 +143,11 @@ function Navbar() {
             variant="button"
             underline="hover"
             color="textPrimary"
-            onClick={() => history.push('/about')}
+            onClick={() => history.push('/')}
           >
             About
           </Link>
-          {loggedIn ? (
+          {auth ? (
             <Link
               sx={navbarItemStyles}
               href="/eat"
@@ -161,23 +159,23 @@ function Navbar() {
               Let's eat
             </Link>
           ) : null}
-          {loggedIn ? (
+          {auth ? (
             <Link sx={navbarItemStyles} href="/menu" variant="button" underline="hover" color="textPrimary">
               Menu
             </Link>
           ) : null}
-          {loggedIn ? null : (
+          {auth ? null : (
             <Link sx={navbarItemStyles} href="/signup" variant="button" underline="hover" color="textPrimary">
               Sign up
             </Link>
           )}
         </nav>
-        {loggedIn ? null : (
+        {auth ? null : (
           <Button sx={navbarItemStyles} color="primary" variant="outlined" onClick={() => history.push('/login')}>
             Login
           </Button>
         )}
-        {loggedIn ? (
+        {auth ? (
           <Button sx={navbarItemStyles} color="error" variant="outlined" onClick={handleLogoutUser}>
             Logout
           </Button>
