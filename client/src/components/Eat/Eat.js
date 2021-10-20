@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
+import { Redirect } from 'react-router-dom';
 import FoodList from '../FoodList/FoodList';
 import { getFoodsToEat } from '../../api/apiService';
+import { getSessionData } from '../../utils';
 
 import { Container, Typography } from '@mui/material';
 
@@ -27,6 +29,10 @@ function Eat() {
   useEffect(() => {
     fetchFoodsToEat();
   }, []);
+
+  if (!getSessionData()) {
+    return <Redirect to="/login" />;
+  }
 
   return (
     <Container sx={containerStyle}>

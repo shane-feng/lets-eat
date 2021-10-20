@@ -1,7 +1,9 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
+import { Redirect } from 'react-router-dom';
 import FoodList from '../FoodList/FoodList';
 import FoodFormModal from '../FoodFormModal/FoodFormModal';
 import { getFoods, deleteFood } from '../../api/apiService';
+import { getSessionData } from '../../utils';
 
 import { Container, Box, Typography, Button, CircularProgress } from '@mui/material';
 
@@ -30,7 +32,7 @@ const addFoodButtonStyle = {
 
 function Menu() {
   const [foods, setFoods] = useState();
-  const [foodToEdit, setFoodToEdit] = useState('');
+  const [foodToEdit, setFoodToEdit] = useState();
   const [isFoodFormModalOpen, setIsFoodFormModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [addFoodMode, setAddFoodMode] = useState(false);
@@ -50,6 +52,7 @@ function Menu() {
 
   const fetchFoods = async () => {
     try {
+      setLoading(true);
       const { data } = await getFoods();
       setFoods(data);
       setLoading(false);
@@ -81,10 +84,12 @@ function Menu() {
   }, [handleOpenEditFoodFormModal, deleteFoodItem]);
 
   useEffect(() => {
-    handleCloseModal();
-    setLoading(true);
     fetchFoods();
   }, []);
+
+  if (!getSessionData()) {
+    return <Redirect to="/login" />;
+  }
 
   return (
     <Container sx={containerStyle}>

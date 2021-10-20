@@ -1,10 +1,9 @@
 import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
 import { signupUser } from '../../api/apiService';
-import { setSessionData } from '../../utils';
+import { setSessionData, getSessionData } from '../../utils';
 
-import { Container, Grid, Button } from '@mui/material';
-import { Typography } from '@mui/material';
+import { Container, Grid, Typography, Button } from '@mui/material';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 
 const containerStyle = { justifyContent: 'center', textAlign: 'center' };
@@ -36,6 +35,10 @@ function Signup() {
       console.log(error);
     }
   };
+
+  if (getSessionData()) {
+    return <Redirect to="/about" />;
+  }
 
   return (
     <Container maxWidth="sm" sx={containerStyle}>

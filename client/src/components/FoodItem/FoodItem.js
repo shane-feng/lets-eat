@@ -118,7 +118,6 @@ function FoodItem({ food, isEatFoodListItem, img, buttonsProps }) {
                     checked={isEatToday}
                     onChange={(event) => {
                       toggleEatFoodToday(food?._id);
-
                       // disable user from toggling back and forth on the lets eat
                       // page after the user has chosen to not eat a food item today
                       if (isEatFoodListItem) {

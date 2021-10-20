@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
 import { loginUser } from '../../api/apiService';
-import { setSessionData } from '../../utils';
+import { setSessionData, getSessionData } from '../../utils';
 
 import { Container, Grid, Button } from '@mui/material';
 import { Typography } from '@mui/material';
@@ -33,6 +33,10 @@ function Login() {
       console.log(error);
     }
   };
+
+  if (getSessionData()) {
+    return <Redirect to="/about" />;
+  }
 
   return (
     <Container maxWidth="sm" sx={containerStyle}>
