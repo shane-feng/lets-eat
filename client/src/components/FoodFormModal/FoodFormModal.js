@@ -108,13 +108,13 @@ function FoodFormModal({ isFoodFormModalOpen, handleCloseModal, addFoodMode, foo
     const food = { name: foodName, picture: foodPicture };
     try {
       if (addFoodMode) {
+        handleCloseModal();
         await createFood(food);
         fetchFoods();
-        handleCloseModal();
       } else {
+        handleCloseModal();
         await updateFood({ _id: foodToEdit?._id, ...food });
         fetchFoods();
-        handleCloseModal();
       }
     } catch (error) {
       console.log(error);
