@@ -76,8 +76,9 @@ const boxStyle = {
   display: 'flex',
 };
 
-function FoodItem({ food, fetchFoods, img, buttonsProps }) {
+function FoodItem({ food, isEatFoodListItem, img, buttonsProps }) {
   const [isEatToday, setIsEatToday] = useState(checkDateIsToday(food?.dateToEat));
+
   const toggleEatFoodToday = useCallback(async () => {
     const today = new Date();
     try {
@@ -87,11 +88,10 @@ function FoodItem({ food, fetchFoods, img, buttonsProps }) {
       const date = checkDateIsToday(food?.dateToEat) ? null : today;
       await updateFoodToEatDate(food._id, date);
       setIsEatToday(!isEatToday);
-      fetchFoods();
     } catch (error) {
       console.log(error);
     }
-  }, [isEatToday, fetchFoods, food._id, food?.dateToEat]);
+  }, [isEatToday, food._id, food.dateToEat]);
 
   const buttons = buttonsProps?.map((buttonProps, index) => {
     return (
@@ -102,18 +102,31 @@ function FoodItem({ food, fetchFoods, img, buttonsProps }) {
   });
 
   return (
-    <Grid item key={food._id} xs={12} lg={6} sx={gridItemStyle}>
+    <Grid item key={food?._id} xs={12} lg={6} sx={gridItemStyle}>
       <Card sx={cardStyle}>
         <CardMedia component="img" image={img} alt="Food Image" sx={cardMediaStyle} />
         <Container disableGutters sx={containerStyle}>
           <CardContent sx={cardContentStyle}>
-            <Typography variant="h6">{food.name}</Typography>
+            <Typography variant="h6">{food?.name}</Typography>
           </CardContent>
           <CardActions disableSpacing sx={cardActionsStyle}>
             <FormGroup>
               <FormControlLabel
                 sx={formControlLabelStyle}
-                control={<Switch checked={isEatToday} onChange={() => toggleEatFoodToday(food._id)} />}
+                control={
+                  <Switch
+                    checked={isEatToday}
+                    onChange={(event) => {
+                      toggleEatFoodToday(food?._id);
+
+                      // disable user from toggling back and forth on the lets eat
+                      // page after the user has chosen to not eat a food item today
+                      if (isEatFoodListItem) {
+                        event.target.disabled = true;
+                      }
+                    }}
+                  />
+                }
                 label={'Eat'}
                 labelPlacement="end"
               />

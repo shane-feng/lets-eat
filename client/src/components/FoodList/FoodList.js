@@ -8,14 +8,23 @@ const containerStyle = { textAlign: 'center', paddingBottom: '50px' };
 
 const gridContainerStyle = { justifyContent: 'center', marginTop: '50px' };
 
-function FoodList({ foods, fetchFoods, buttonsProps }) {
+function FoodList({ foods, isEatFoodList, fetchFoodsToEat, buttonsProps }) {
   const renderFoods = useMemo(() => {
     return foods?.map((food, index) => {
       const imgUri = food.picture ? decodeDataUri(food.picture.data) : '';
 
-      return <FoodItem key={index} food={food} fetchFoods={fetchFoods} img={imgUri} buttonsProps={buttonsProps} />;
+      return (
+        <FoodItem
+          key={index}
+          food={food}
+          isEatFoodListItem={isEatFoodList}
+          fetchFoodsToEat={fetchFoodsToEat}
+          img={imgUri}
+          buttonsProps={buttonsProps}
+        />
+      );
     });
-  }, [foods, fetchFoods, buttonsProps]);
+  }, [foods, isEatFoodList, fetchFoodsToEat, buttonsProps]);
 
   return (
     <Container sx={containerStyle}>

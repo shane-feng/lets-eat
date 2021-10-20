@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { logoutUser } from '../../api/apiService';
-import { clearSessionData } from '../../utils';
+import { getSessionData, clearSessionData } from '../../utils';
 
 import { AppBar, Toolbar, Typography, Button, Link, IconButton, Menu, MenuItem } from '@mui/material/';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -31,6 +31,7 @@ const menuItemStyle = {
 };
 
 function Navbar() {
+  const [loggedIn, setLoggedIn] = useState(false);
   // Sets html element for menu items position to be anchored to
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
@@ -45,6 +46,8 @@ function Navbar() {
     try {
       await logoutUser();
       clearSessionData();
+      setLoggedIn(false);
+      history.push('/about');
     } catch (error) {
       console.log(error);
     }
@@ -70,38 +73,64 @@ function Navbar() {
       <MenuItem
         sx={menuItemStyle}
         onClick={() => {
-          history.push('/eat');
+          history.push('/about');
           handleMobileMenuClose();
         }}
       >
-        Let's Eat
+        About
       </MenuItem>
-      <MenuItem
-        sx={menuItemStyle}
-        onClick={() => {
-          history.push('/menu');
-          handleMobileMenuClose();
-        }}
-      >
-        Menu
-      </MenuItem>
-      <MenuItem
-        sx={menuItemStyle}
-        onClick={() => {
-          history.push('/signup');
-          handleMobileMenuClose();
-        }}
-      >
-        Sign Up
-      </MenuItem>
-      <MenuItem sx={menuItemStyle} onClick={() => history.push('/login')}>
-        Login
-      </MenuItem>
-      <MenuItem sx={menuItemStyle} onClick={handleLogoutUser}>
-        Logout
-      </MenuItem>
+      {loggedIn ? (
+        <MenuItem
+          sx={menuItemStyle}
+          onClick={() => {
+            history.push('/eat');
+            handleMobileMenuClose();
+          }}
+        >
+          Let's Eat
+        </MenuItem>
+      ) : null}
+      {loggedIn ? (
+        <MenuItem
+          sx={menuItemStyle}
+          onClick={() => {
+            history.push('/menu');
+            handleMobileMenuClose();
+          }}
+        >
+          Menu
+        </MenuItem>
+      ) : null}
+      {loggedIn ? null : (
+        <MenuItem
+          sx={menuItemStyle}
+          onClick={() => {
+            history.push('/signup');
+            handleMobileMenuClose();
+          }}
+        >
+          Sign Up
+        </MenuItem>
+      )}
+      {loggedIn ? null : (
+        <MenuItem sx={menuItemStyle} onClick={() => history.push('/login')}>
+          Login
+        </MenuItem>
+      )}
+      {loggedIn ? (
+        <MenuItem sx={menuItemStyle} onClick={handleLogoutUser}>
+          Logout
+        </MenuItem>
+      ) : null}
     </Menu>
   );
+
+  useEffect(() => {
+    const { session } = getSessionData();
+    if (session) {
+      setLoggedIn(true);
+    }
+  }, []);
 
   return (
     <AppBar position="static" color="default" elevation={0} sx={appBarStyle}>
@@ -116,23 +145,43 @@ function Navbar() {
             variant="button"
             underline="hover"
             color="textPrimary"
-            onClick={() => history.push('/eat')}
+            onClick={() => history.push('/about')}
           >
-            Let's eat
+            About
           </Link>
-          <Link sx={navbarItemStyles} href="/menu" variant="button" underline="hover" color="textPrimary">
-            Menu
-          </Link>
-          <Link sx={navbarItemStyles} href="/signup" variant="button" underline="hover" color="textPrimary">
-            Sign up
-          </Link>
+          {loggedIn ? (
+            <Link
+              sx={navbarItemStyles}
+              href="/eat"
+              variant="button"
+              underline="hover"
+              color="textPrimary"
+              onClick={() => history.push('/eat')}
+            >
+              Let's eat
+            </Link>
+          ) : null}
+          {loggedIn ? (
+            <Link sx={navbarItemStyles} href="/menu" variant="button" underline="hover" color="textPrimary">
+              Menu
+            </Link>
+          ) : null}
+          {loggedIn ? null : (
+            <Link sx={navbarItemStyles} href="/signup" variant="button" underline="hover" color="textPrimary">
+              Sign up
+            </Link>
+          )}
         </nav>
-        <Button sx={navbarItemStyles} color="primary" variant="outlined" onClick={() => history.push('/login')}>
-          Login
-        </Button>
-        <Button sx={navbarItemStyles} color="error" variant="outlined" onClick={handleLogoutUser}>
-          Logout
-        </Button>
+        {loggedIn ? null : (
+          <Button sx={navbarItemStyles} color="primary" variant="outlined" onClick={() => history.push('/login')}>
+            Login
+          </Button>
+        )}
+        {loggedIn ? (
+          <Button sx={navbarItemStyles} color="error" variant="outlined" onClick={handleLogoutUser}>
+            Logout
+          </Button>
+        ) : null}
         <IconButton
           size="large"
           edge="start"

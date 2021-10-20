@@ -100,7 +100,7 @@ function Menu() {
         {loading ? (
           <CircularProgress size={80} sx={circularProgressStyle} />
         ) : (
-          <FoodList foods={foods} fetchFoods={fetchFoods} buttonsProps={buttonsProps} />
+          <FoodList foods={foods} buttonsProps={buttonsProps} />
         )}
         <FoodFormModal
           isFoodFormModalOpen={isFoodFormModalOpen}

@@ -15,7 +15,7 @@ const messageStyle = {
 function Eat() {
   const [foods, setFoods] = useState();
 
-  const fetchFoods = async () => {
+  const fetchFoodsToEat = async () => {
     try {
       const { data } = await getFoodsToEat();
       setFoods(data);
@@ -25,7 +25,7 @@ function Eat() {
   };
 
   useEffect(() => {
-    fetchFoods();
+    fetchFoodsToEat();
   }, []);
 
   return (
@@ -34,7 +34,7 @@ function Eat() {
         Lets Eat . . .
       </Typography>
       {foods?.length > 0 ? (
-        <FoodList foods={foods} fetchFoods={fetchFoods} />
+        <FoodList isEatFoodList={true} fetchFoodsToEat={fetchFoodsToEat} foods={foods} />
       ) : (
         <Typography sx={messageStyle} variant="h3" component="div">
           Head To The Menu And Get Some Food To Eat!
