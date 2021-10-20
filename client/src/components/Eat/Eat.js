@@ -8,6 +8,10 @@ const containerStyle = {
   textAlign: 'center',
 };
 
+const messageStyle = {
+  marginTop: '150px',
+};
+
 function Eat() {
   const [foods, setFoods] = useState();
 
@@ -29,7 +33,13 @@ function Eat() {
       <Typography variant="h5" component="div">
         Lets Eat . . .
       </Typography>
-      <FoodList foods={foods} />
+      {foods?.length > 0 ? (
+        <FoodList foods={foods} fetchFoods={fetchFoods} />
+      ) : (
+        <Typography sx={messageStyle} variant="h3" component="div">
+          Head To The Menu And Get Some Food To Eat!
+        </Typography>
+      )}
     </Container>
   );
 }

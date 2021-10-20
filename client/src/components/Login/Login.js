@@ -23,8 +23,8 @@ function Login() {
 
   const history = useHistory();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+  const handleLogin = async (event) => {
+    event.preventDefault();
     try {
       const { data } = await loginUser(email, password);
       setSessionData({ id: data.user._id, email: data.user.email, token: data.token });
@@ -50,7 +50,7 @@ function Login() {
               fullWidth
               sx={textFieldStyle}
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(event) => setEmail(event.target.value)}
               validators={['required', 'isEmail']}
               errorMessages={['This field is required', 'Invalid email format']}
             />

@@ -30,10 +30,10 @@ const addFoodButtonStyle = {
 
 function Menu() {
   const [foods, setFoods] = useState();
+  const [foodToEdit, setFoodToEdit] = useState('');
   const [isFoodFormModalOpen, setIsFoodFormModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [addFoodMode, setAddFoodMode] = useState(false);
-  const [editFoodItemId, setEditFoodItemId] = useState('');
 
   const handleOpenAddFoodFormModal = () => {
     setAddFoodMode(true);
@@ -42,7 +42,7 @@ function Menu() {
 
   const handleOpenEditFoodFormModal = useCallback((food) => {
     setAddFoodMode(false);
-    setEditFoodItemId(food._id);
+    setFoodToEdit(food);
     setIsFoodFormModalOpen(true);
   }, []);
 
@@ -100,13 +100,13 @@ function Menu() {
         {loading ? (
           <CircularProgress size={80} sx={circularProgressStyle} />
         ) : (
-          <FoodList foods={foods} buttonsProps={buttonsProps} />
+          <FoodList foods={foods} fetchFoods={fetchFoods} buttonsProps={buttonsProps} />
         )}
         <FoodFormModal
           isFoodFormModalOpen={isFoodFormModalOpen}
           handleCloseModal={handleCloseModal}
           addFoodMode={addFoodMode}
-          editFoodItemId={editFoodItemId}
+          foodToEdit={foodToEdit}
           fetchFoods={fetchFoods}
         />
       </Box>

@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useState, useCallback } from 'react';
 import { updateFoodToEatDate } from '../../api/apiService';
 import { checkDateIsToday } from '../../utils';
 
@@ -16,7 +16,6 @@ import {
   FormGroup,
   FormControlLabel,
 } from '@mui/material';
-import useEnhancedEffect from '@mui/utils/useEnhancedEffect';
 
 const gridItemStyle = {
   justifyContent: 'center',
@@ -63,7 +62,7 @@ const cardActionsStyle = {
     md: 'grid',
   },
   justifyContent: {
-    xs: 'space-around',
+    xs: 'center',
     md: 'center',
   },
 };
@@ -77,7 +76,8 @@ const boxStyle = {
   display: 'flex',
 };
 
-function FoodItem({ food, img, buttonsProps }) {
+function FoodItem({ food, fetchFoods, img, buttonsProps }) {
+  const [isEatToday, setIsEatToday] = useState(checkDateIsToday(food?.dateToEat));
   const toggleEatFoodToday = useCallback(async () => {
     const today = new Date();
     try {
@@ -86,10 +86,12 @@ function FoodItem({ food, img, buttonsProps }) {
       // if food has toEatDate which is not today - toggle on - return today's date
       const date = checkDateIsToday(food?.dateToEat) ? null : today;
       await updateFoodToEatDate(food._id, date);
+      setIsEatToday(!isEatToday);
+      fetchFoods();
     } catch (error) {
       console.log(error);
     }
-  }, [food._id, food?.dateToEat]);
+  }, [isEatToday, fetchFoods, food._id, food?.dateToEat]);
 
   const buttons = buttonsProps?.map((buttonProps, index) => {
     return (
@@ -98,14 +100,6 @@ function FoodItem({ food, img, buttonsProps }) {
       </Button>
     );
   });
-
-  const switchProps = useMemo(() => {
-    return { label: 'Eat', onChange: toggleEatFoodToday };
-  }, [toggleEatFoodToday]);
-
-  useEnhancedEffect(() => {
-    console.log(food);
-  }, []);
 
   return (
     <Grid item key={food._id} xs={12} lg={6} sx={gridItemStyle}>
@@ -116,21 +110,14 @@ function FoodItem({ food, img, buttonsProps }) {
             <Typography variant="h6">{food.name}</Typography>
           </CardContent>
           <CardActions disableSpacing sx={cardActionsStyle}>
-            {switchProps ? (
-              <FormGroup>
-                <FormControlLabel
-                  sx={formControlLabelStyle}
-                  control={
-                    <Switch
-                      defaultChecked={checkDateIsToday(food?.dateToEat) ? true : false}
-                      onChange={() => switchProps.onChange(food._id)}
-                    />
-                  }
-                  label={'Eat'}
-                  labelPlacement="end"
-                />
-              </FormGroup>
-            ) : null}
+            <FormGroup>
+              <FormControlLabel
+                sx={formControlLabelStyle}
+                control={<Switch checked={isEatToday} onChange={() => toggleEatFoodToday(food._id)} />}
+                label={'Eat'}
+                labelPlacement="end"
+              />
+            </FormGroup>
             <Box sx={boxStyle}>{buttons}</Box>
           </CardActions>
         </Container>

@@ -77,9 +77,9 @@ const Input = styled('input')({
   display: 'none',
 });
 
-function FoodFormModal({ isFoodFormModalOpen, handleCloseModal, addFoodMode, editFoodItemId, fetchFoods }) {
-  const [foodName, setFoodName] = useState('');
-  const [foodPicture, setFoodPicture] = useState();
+function FoodFormModal({ isFoodFormModalOpen, handleCloseModal, addFoodMode, foodToEdit, fetchFoods }) {
+  const [foodName, setFoodName] = useState(foodToEdit?.name);
+  const [foodPicture, setFoodPicture] = useState(foodToEdit?.picture);
 
   const readFileAsync = async (file) => {
     return new Promise((resolve, reject) => {
@@ -103,8 +103,8 @@ function FoodFormModal({ isFoodFormModalOpen, handleCloseModal, addFoodMode, edi
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     const food = { name: foodName, picture: foodPicture };
     try {
       if (addFoodMode) {
@@ -112,7 +112,7 @@ function FoodFormModal({ isFoodFormModalOpen, handleCloseModal, addFoodMode, edi
         fetchFoods();
         handleCloseModal();
       } else {
-        await updateFood({ _id: editFoodItemId, ...food });
+        await updateFood({ _id: foodToEdit?._id, ...food });
         fetchFoods();
         handleCloseModal();
       }
@@ -150,7 +150,7 @@ function FoodFormModal({ isFoodFormModalOpen, handleCloseModal, addFoodMode, edi
                   fullWidth
                   sx={textFieldStyle}
                   value={foodName}
-                  onChange={(e) => setFoodName(e.target.value)}
+                  onChange={(event) => setFoodName(event.target.value)}
                   validators={['required']}
                   errorMessages={['This field is required']}
                 />

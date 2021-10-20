@@ -25,8 +25,8 @@ function Signup() {
 
   const history = useHistory();
 
-  const handleSignup = async (e) => {
-    e.preventDefault();
+  const handleSignup = async (event) => {
+    event.preventDefault();
 
     try {
       const { data } = await signupUser({ email, firstName, lastName, password });
@@ -53,7 +53,7 @@ function Signup() {
               fullWidth
               sx={textFieldStyle}
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(event) => setEmail(event.target.value)}
               validators={['required', 'isEmail']}
               errorMessages={['This field is required', 'Invalid email format']}
             />
@@ -67,7 +67,7 @@ function Signup() {
               fullWidth
               sx={textFieldStyle}
               value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
+              onChange={(event) => setFirstName(event.target.value)}
               validators={['required', 'matchRegexp:^[a-zA-Zs]+$']}
               errorMessages={['This field is required', 'Must contain only letters']}
             />
@@ -81,7 +81,7 @@ function Signup() {
               fullWidth
               sx={textFieldStyle}
               value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
+              onChange={(event) => setLastName(event.target.value)}
               validators={['required', 'matchRegexp:^[a-zA-Zs]+$']}
               errorMessages={['This field is required', 'Must contain only letters']}
             />

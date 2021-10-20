@@ -52,7 +52,8 @@ router.get('/', auth, async (req, res) => {
     try {
       const results = await Food.find({ owner: req.user._id });
       res.send(results);
-    } catch (e) {
+    } catch (error) {
+      console.log(error);
       res.status(500).send();
     }
   }
@@ -78,8 +79,9 @@ router.patch('/:id', auth, async (req, res) => {
     updateFields.forEach((update) => (food[update] = req.body[update]));
     await food.save();
     res.send(food);
-  } catch (e) {
-    res.status(400).send(e);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
   }
 });
 
@@ -94,8 +96,9 @@ router.patch('/:id', auth, async (req, res) => {
     food.dateToEat = req.body.dateToEat;
     await food.save();
     res.send(food);
-  } catch (e) {
-    res.status(400).send(e);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
   }
 });
 
@@ -109,7 +112,8 @@ router.delete('/:id', auth, async (req, res) => {
     }
 
     res.send(food);
-  } catch (e) {
+  } catch (error) {
+    console.log(error);
     res.status(500).send();
   }
 });

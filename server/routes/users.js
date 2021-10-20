@@ -20,7 +20,8 @@ router.post('/login', async (req, res) => {
     const user = await User.findByCredentials(req.body.email, req.body.password);
     const token = await user.generateAuthToken();
     res.send({ user, token });
-  } catch (e) {
+  } catch (error) {
+    console.log(error);
     res.status(400).send();
   }
 });
@@ -31,7 +32,8 @@ router.post('/logout', auth, async (req, res) => {
     await req.user.save();
 
     res.send();
-  } catch (e) {
+  } catch (error) {
+    console.log(error);
     res.status(500).send();
   }
 });
