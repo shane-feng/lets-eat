@@ -16,6 +16,7 @@ const messageStyle = {
 
 function Eat() {
   const [foods, setFoods] = useState();
+  const { session } = getSessionData();
 
   const fetchFoodsToEat = async () => {
     try {
@@ -30,7 +31,7 @@ function Eat() {
     fetchFoodsToEat();
   }, []);
 
-  if (!getSessionData()) {
+  if (session) {
     return <Redirect to="/login" />;
   }
 

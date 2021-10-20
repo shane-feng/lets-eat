@@ -36,6 +36,7 @@ function Menu() {
   const [isFoodFormModalOpen, setIsFoodFormModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [addFoodMode, setAddFoodMode] = useState(false);
+  const { session } = getSessionData();
 
   const handleOpenAddFoodFormModal = () => {
     setAddFoodMode(true);
@@ -87,7 +88,7 @@ function Menu() {
     fetchFoods();
   }, []);
 
-  if (!getSessionData()) {
+  if (session) {
     return <Redirect to="/login" />;
   }
 

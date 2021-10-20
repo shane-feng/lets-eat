@@ -21,7 +21,7 @@ function Signup() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [password, setPassword] = useState('');
-
+  const { session } = getSessionData();
   const history = useHistory();
 
   const handleSignup = async (event) => {
@@ -36,7 +36,7 @@ function Signup() {
     }
   };
 
-  if (getSessionData()) {
+  if (session) {
     return <Redirect to="/about" />;
   }
 

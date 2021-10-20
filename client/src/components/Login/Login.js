@@ -20,7 +20,7 @@ const buttonContainerStyle = { marginTop: '10px', padding: '0 50px', justifyCont
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  const { session } = getSessionData();
   const history = useHistory();
 
   const handleLogin = async (event) => {
@@ -34,7 +34,7 @@ function Login() {
     }
   };
 
-  if (getSessionData()) {
+  if (session) {
     return <Redirect to="/about" />;
   }
 
