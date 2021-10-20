@@ -78,8 +78,8 @@ const Input = styled('input')({
 });
 
 function FoodFormModal({ isFoodFormModalOpen, handleCloseModal, addFoodMode, foodToEdit, fetchFoods }) {
-  const [foodName, setFoodName] = useState(foodToEdit?.name);
-  const [foodPicture, setFoodPicture] = useState(foodToEdit?.picture);
+  const [foodName, setFoodName] = useState('');
+  const [foodPicture, setFoodPicture] = useState('');
 
   const readFileAsync = async (file) => {
     return new Promise((resolve, reject) => {
