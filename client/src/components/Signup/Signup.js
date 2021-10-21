@@ -39,7 +39,7 @@ function Signup() {
   };
 
   if (auth) {
-    return <Redirect to="/about" />;
+    return <Redirect to="/" />;
   }
 
   return (
