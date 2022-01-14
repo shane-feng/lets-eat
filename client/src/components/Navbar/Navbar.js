@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { logoutUser } from '../../api/apiService';
 import { clearSessionData } from '../../utils';
 import { AuthContext } from '../../contexts/AuthContext';
@@ -37,7 +37,7 @@ function Navbar() {
   const [auth, setAuth] = useContext(AuthContext);
 
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleMobileMenuOpen = (event) => setMobileMoreAnchorEl(event.currentTarget);
 
@@ -48,7 +48,7 @@ function Navbar() {
       await logoutUser();
       clearSessionData();
       setAuth(false);
-      history.push('/');
+      navigate('/');
     } catch (error) {
       console.log(error);
     }
@@ -74,7 +74,7 @@ function Navbar() {
       <MenuItem
         sx={menuItemStyle}
         onClick={() => {
-          history.push('/');
+          navigate('/');
           handleMobileMenuClose();
         }}
       >
@@ -84,7 +84,7 @@ function Navbar() {
         <MenuItem
           sx={menuItemStyle}
           onClick={() => {
-            history.push('/eat');
+            navigate('/eat');
             handleMobileMenuClose();
           }}
         >
@@ -95,7 +95,7 @@ function Navbar() {
         <MenuItem
           sx={menuItemStyle}
           onClick={() => {
-            history.push('/menu');
+            navigate('/menu');
             handleMobileMenuClose();
           }}
         >
@@ -106,7 +106,7 @@ function Navbar() {
         <MenuItem
           sx={menuItemStyle}
           onClick={() => {
-            history.push('/signup');
+            navigate('/signup');
             handleMobileMenuClose();
           }}
         >
@@ -114,7 +114,7 @@ function Navbar() {
         </MenuItem>
       )}
       {auth ? null : (
-        <MenuItem sx={menuItemStyle} onClick={() => history.push('/login')}>
+        <MenuItem sx={menuItemStyle} onClick={() => navigate('/login', { replace: true })}>
           Login
         </MenuItem>
       )}
@@ -139,7 +139,7 @@ function Navbar() {
             variant="button"
             underline="hover"
             color="textPrimary"
-            onClick={() => history.push('/')}
+            onClick={() => navigate('/')}
           >
             About
           </Link>
@@ -150,7 +150,7 @@ function Navbar() {
               variant="button"
               underline="hover"
               color="textPrimary"
-              onClick={() => history.push('/eat')}
+              onClick={() => navigate('/eat')}
             >
               Let's eat
             </Link>
@@ -167,7 +167,7 @@ function Navbar() {
           )}
         </nav>
         {auth ? null : (
-          <Button sx={navbarItemStyles} color="primary" variant="outlined" onClick={() => history.push('/login')}>
+          <Button sx={navbarItemStyles} color="primary" variant="outlined" onClick={() => navigate('/login')}>
             Login
           </Button>
         )}

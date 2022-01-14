@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import FoodList from '../FoodList/FoodList';
 import { getFoodsToEat } from '../../api/apiService';
 import { AuthContext } from '../../contexts/AuthContext';
@@ -42,7 +42,7 @@ function Eat() {
   }, [auth]);
 
   if (!auth) {
-    return <Redirect to="/login" />;
+    return <Navigate to="/login" />;
   }
 
   return (

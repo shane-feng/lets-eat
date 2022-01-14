@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react';
-import { useHistory, Redirect } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { loginUser } from '../../api/apiService';
 import { setSessionData } from '../../utils';
 import { AuthContext } from '../../contexts/AuthContext';
@@ -21,7 +21,7 @@ const buttonContainerStyle = { marginTop: '10px', padding: '0 50px', justifyCont
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const history = useHistory();
+  const navigate = useNavigate();
   const [auth, setAuth] = useContext(AuthContext);
 
   const handleLogin = async (event) => {
@@ -30,14 +30,14 @@ function Login() {
       const { data } = await loginUser(email, password);
       setSessionData({ id: data.user._id, email: data.user.email, token: data.token });
       setAuth(true);
-      history.push('/eat');
+      navigate('/eat');
     } catch (error) {
       console.log(error);
     }
   };
 
   if (auth) {
-    return <Redirect to="/" />;
+    return <Navigate to="/" />;
   }
 
   return (

@@ -12,12 +12,6 @@ export const clearSessionData = () => {
   localStorage.clear();
 };
 
-export const decodeDataUri = (buffer) => {
-  const encoded = Buffer.from(buffer).toString('base64');
-  const uri = window.atob(encoded);
-  return uri;
-};
-
 export const checkDateIsToday = (date) => {
   const dateToCheck = new Date(date);
   const today = new Date();

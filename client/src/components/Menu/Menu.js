@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useCallback, useContext } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import FoodList from '../FoodList/FoodList';
 import FoodFormModal from '../FoodFormModal/FoodFormModal';
 import { getFoods, deleteFood } from '../../api/apiService';
@@ -91,7 +91,7 @@ function Menu() {
   }, [auth]);
 
   if (!auth) {
-    return <Redirect to="/login" />;
+    return <Navigate to="/login" />;
   }
 
   return (

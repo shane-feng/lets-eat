@@ -3,7 +3,7 @@ const { Schema, model } = require('mongoose');
 const foodSchema = new Schema(
   {
     picture: {
-      type: Buffer,
+      type: String,
     },
     name: {
       type: String,
