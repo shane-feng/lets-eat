@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { updateFoodToEatDate } from '../../api/apiService';
-import { checkDateIsToday } from '../../utils';
+import { checkDateIsToday, clearSessionData } from '../../utils';
 
 import {
   Box,
@@ -90,6 +90,10 @@ function FoodItem({ food, isEatFoodListItem, img, buttonsProps }) {
       setIsEatToday(!isEatToday);
     } catch (error) {
       console.log(error);
+      if (error.response.status === 401) {
+        clearSessionData();
+        window.location.reload();
+      }
     }
   }, [isEatToday, food._id, food.dateToEat]);
 
