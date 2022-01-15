@@ -1,9 +1,10 @@
 import { useState, useEffect, useMemo, useCallback, useContext } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import FoodList from '../FoodList/FoodList';
 import FoodFormModal from '../FoodFormModal/FoodFormModal';
 import { getFoods, deleteFood } from '../../api/apiService';
 import { AuthContext } from '../../contexts/AuthContext';
+import { clearSessionData } from '../../utils';
 
 import { Container, Box, Typography, Button, CircularProgress } from '@mui/material';
 
@@ -59,6 +60,10 @@ function Menu() {
       setLoading(false);
     } catch (error) {
       console.log(error);
+      if (error.response.status === 401) {
+        clearSessionData();
+        window.location.reload();
+      }
     }
   };
 
@@ -68,6 +73,10 @@ function Menu() {
       fetchFoods();
     } catch (error) {
       console.log(error);
+      if (error.response.status === 401) {
+        clearSessionData();
+        window.location.reload();
+      }
     }
   }, []);
 
@@ -91,7 +100,7 @@ function Menu() {
   }, [auth]);
 
   if (!auth) {
-    return <Redirect to="/login" />;
+    return <Navigate to="/login" />;
   }
 
   return (

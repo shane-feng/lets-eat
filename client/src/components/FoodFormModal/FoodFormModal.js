@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { createFood, updateFood } from '../../api/apiService';
+import { clearSessionData } from '../../utils';
 
 import { Card, CardMedia, Modal, Backdrop, Fade, Box, Grid, Typography, Button, styled } from '@mui/material';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
@@ -118,6 +119,10 @@ function FoodFormModal({ isFoodFormModalOpen, handleCloseModal, addFoodMode, foo
       }
     } catch (error) {
       console.log(error);
+      if (error.response.status === 401) {
+        clearSessionData();
+        window.location.reload();
+      }
     }
   };
 

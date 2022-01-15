@@ -52,6 +52,7 @@ export const getFoods = async () => {
       Authorization: `Bearer ${session.token}`,
     },
   });
+
   return res;
 };
 

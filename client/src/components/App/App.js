@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import About from '../About/About';
 import Signup from '../Signup/Signup';
@@ -13,13 +13,13 @@ function App() {
     <AuthContextProvider>
       <Router>
         <Navbar />
-        <Switch>
-          <Route exact path={'/'} component={About} />
-          <Route exact path={'/signup'} component={Signup} />
-          <Route exact path={'/login'} component={Login} />
-          <Route exact path={'/eat'} component={Eat} />
-          <Route exact path={'/menu'} component={Menu} />
-        </Switch>
+        <Routes>
+          <Route path="/" element={<About />} />
+          <Route path="signup" element={<Signup />} />
+          <Route path="login" element={<Login />} />
+          <Route path="eat" element={<Eat />} />
+          <Route path="menu" element={<Menu />} />
+        </Routes>
       </Router>
     </AuthContextProvider>
   );

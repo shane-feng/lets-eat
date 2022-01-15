@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react';
-import { useHistory, Redirect } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { signupUser } from '../../api/apiService';
 import { setSessionData } from '../../utils';
 import { AuthContext } from '../../contexts/AuthContext';
@@ -22,7 +22,7 @@ function Signup() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [password, setPassword] = useState('');
-  const history = useHistory();
+  const navigate = useNavigate();
   const [auth, setAuth] = useContext(AuthContext);
 
   const handleSignup = async (event) => {
@@ -32,14 +32,14 @@ function Signup() {
       const { data } = await signupUser({ email, firstName, lastName, password });
       setSessionData({ id: data.user._id, email: data.user.email, token: data.token });
       setAuth(true);
-      history.push('/eat');
+      navigate('/eat');
     } catch (error) {
       console.log(error);
     }
   };
 
   if (auth) {
-    return <Redirect to="/" />;
+    return <Navigate to="/" />;
   }
 
   return (
