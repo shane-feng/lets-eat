@@ -1,0 +1,38 @@
+version: '3.9'
+
+services:
+  api:
+    container_name: lets-eat-api
+    restart: always
+    image: lets-eat-api
+    build:
+      context: .
+    ports:
+      - '8000:8000'
+    environment:
+      PORT: 8000
+      DATABASE_URL: mongodb://mongo_db:27017/lets-eat-db
+      TOKEN_EXPIRES_IN_HOURS: 7h
+      REQUEST_SIZE_LIMIT: 3mb
+    depends_on:
+      - mongo_db
+    volumes:
+      - ./index.js:/usr/src/app/index.js
+      - ./config:/usr/src/app/config
+      - ./middleware:/usr/src/app/middleware
+      - ./models:/usr/src/app/models
+      - ./routes:/usr/src/app/routes
+      - ./db:/usr/src/app/db
+    command: ['node', 'index.js']
+
+  mongo_db:
+    image: mongo:latest
+    container_name: lets-eat-db
+    restart: always
+    ports:
+      - 2717:27017
+    volumes:
+      - mongo_db:/datat/db
+
+volumes:
+  mongo_db: {}
